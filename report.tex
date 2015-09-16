@@ -1,6 +1,5 @@
 \documentclass[12pt]{article}
-\usepackage{graphicx}
-\graphicspath{ {images/} }
+\usepackage[]{algorithm2e}
 \usepackage{setspace}
 \usepackage[margin=1in]{geometry}
 \usepackage{graphicx}
@@ -56,6 +55,29 @@ In this section, we will detail the three optimizations we  have implemented to 
 One of the major structural changes implemented in TARDIS is the inclusion of two timestamps in each cacheline. This translates to a large additional requirement for memory, so the optimization of timestamp compression was researched to reduce storage costs. We exploit the fact that the two timestamps of each cacheline are usually fairly close, so we implement a base timestamp (bts) and a delta = rts-wts, the difference between the timestamps. The timestamps were originally 64 bits each, so two timestamps per 512 bits of data is a 25\% storage overhead, and not efficient.  With the bts and delta, we were able to dramatically reduce storage costs, but we encountered the problem with timestamp rollover, where a timestamp would numerically increase beyond what the bts + delta scheme could support.
 
 \subsection{Lease Prediction}
+\begin{center}
+
+\begin{tabular}{p{5cm} p{5cm}}
+	\textbf{Core 0} & \textbf{Core 1} \\
+	\begin{algorithm}[H]
+		\While{true}{
+			read A\;
+			B++\;
+		}
+
+\end{algorithm}
+&
+\begin{algorithm}[H]
+		\While{true}{
+			read A\;
+			B++\;
+		}
+\end{algorithm}
+\\
+\end{tabular}
+
+\end{center}
+
 One of the major issues with TARDIS is the fact that because of the concept of a lease, timestamps, specifically the PTS, will increase rapidly if a cacheline is write-intensive. Consider the example above. Assume the lease is arbitrarily chosen as 10. Since B is write-intensive, many renew requests for exclusive ownership will be made to maintain coherence between the two cores, thus causing the PTS to increment quickly in steps of 10. Therefore, although A is read-only, the cacheline needs to be repetitively renewed unnecessarily, as its lease constantly expires. Since renew requests incur extra latency and network traffic, this primitive static lease protocol is undesirable.
 Further motivating the need for a better lease protocol can be seen in \ref{fig:renewals}. For certain benchmarks, about 60\% of requests are renews, while a significantly small percentage of renewal requests are miss speculations, which are necessary renews.
 
@@ -73,6 +95,24 @@ The basic implementation idea is that if data is renewed, then we progressively 
 Since this lease protocol is a very broad idea, we developed implementations that require several parameters, or different variations. One parameter is the value of n. If n is larger, this could allow for a more calibrated lease predictor, as the number of states increases exponentially, but also creates much more storage overhead (extra n bits per cacheline). Another choice is either decrementing the state progressively when a line requests exclusive ownership (10 → 01) or clearing the state counter immediately (10 → 00). In either case though, if a lease expires, we increment the state from 00 to 01, for example. The third parameter to be examined is the mapping from state to the actual lease. We have two basic algorithms, one is an exponentially growing lease and the other is a linearly growing one. Both are similar in nature, and revolve around the same ideas previously mentioned, but increase differently, as evident from the names. We also investigate the effect of using different start points for the lease (the lease assigned to 00), and the increase factor (how much a previous lease is added, or multiplied by). The sweep studies for these parameters can be found in Evaluations.
 
 \section{Livelock Detection}
+
+\begin{center}
+	
+	\begin{tabular}{p{5cm} p{5cm}}
+		\textbf{Core 0} & \textbf{Core 1} \\
+		\begin{algorithm}[H]
+			\While{!done}
+			{(nothing)}
+			
+		\end{algorithm}
+		&
+		\begin{algorithm}[H]
+			done = false $\rightarrow$  true
+		\end{algorithm}
+		\\
+	\end{tabular}
+	
+\end{center}
 
 The problem with livelock occurs when a core needs to wait for one or more cachelines to satisfy certain parameters before continuing forward. However, those cachelines never change because PTS does not increase since the core’s processes are not going forward in the first place. Take  the example above. Core 0 is waiting for done to be true before continuing via an empty while loop. Core 0 will never realize that done becomes true because an empty loop will not increase the core’s PTS. We developed three solutions to this.
 
