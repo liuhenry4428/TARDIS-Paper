@@ -2,6 +2,10 @@
 \usepackage{graphicx}
 \graphicspath{ {images/} }
 \usepackage{setspace}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\graphicspath{ {gfx/} }
+%\DeclareGraphicsExtensions{.pdf,.jpg,.png}
 \doublespacing
 \title{[Come up with title]}
 \date{}
@@ -13,9 +17,13 @@
 
 \section{Introduction}
 
+\begin{figure}
 \begin{center}
-	\textbf{Image Here}
+  \includegraphics[width=6cm]{multicores.jpg}
+  \caption{Simple diagram of a shared memory system.}
+  \label{fig:multicore}
 \end{center}
+\end{figure}
 
 In the modern day, there is a continuously increasing demand for faster computer processors. Since one of the most effective methods to address this is to add multiple cores to a CPU and allowing tasks to execute in parallel, the number of cores is increasing exponentially (a certain IBM chip contains 4,000 processor cores [cite?]). Multiple cores allow for tasks to be split up and handled simultaneously, but accurate and efficient performance requires parallelism and exploitation of shared memory. The essence of maintaining the “correctness” of data between cachelines is to prevent the use of stale data, which is old information that is being used when it has already been altered by another core. This problem is known as memory coherence, and a coherence protocol is necessary to facilitate performance and scalability of the system.
 
@@ -47,9 +55,15 @@ One of the major structural changes implemented in TARDIS is the inclusion of tw
 
 \subsection{Lease Prediction}
 One of the major issues with TARDIS is the fact that because of the concept of a lease, timestamps, specifically the PTS, will increase rapidly if a cacheline is write-intensive. Consider the example above. Assume the lease is arbitrarily chosen as 10. Since B is write-intensive, many renew requests for exclusive ownership will be made to maintain coherence between the two cores, thus causing the PTS to increment quickly in steps of 10. Therefore, although A is read-only, the cacheline needs to be repetitively renewed unnecessarily, as its lease constantly expires. Since renew requests incur extra latency and network traffic, this primitive static lease protocol is undesirable.
-Further motivating the need for a better lease protocol can be seen in Figure 2. For certain benchmarks, about 60\% of requests are renews, while a significantly small percentage of renewal requests are miss speculations, which are necessary renews.
+Further motivating the need for a better lease protocol can be seen in \ref{fig:renewals}. For certain benchmarks, about 60\% of requests are renews, while a significantly small percentage of renewal requests are miss speculations, which are necessary renews.
 
-Figure 2. Graph illustrating the percentage of renew requests and miss speculations (requests that actually necessary) for various benchmarks. 
+\begin{figure}
+\begin{center}
+  \includegraphics[width=16cm]{image1.png}
+  \caption{Graph illustrating the percentage of renew requests and miss speculations (requests that actually necessary) for various benchmarks. }
+  \label{fig:renewals}
+\end{center}
+\end{figure}
 
 With these observations in mind, we notice that write-intensive lines should have very small lease sizes so that when renew requests are sent, we prevent prolific increase in timestamps. On the other hand, since renewing is unnecessary in read-only lines, there is a potential for much larger leases.
 The basic implementation idea is that if data is renewed, then we progressively give the cacheline a smaller lease whereas data that are suspected to be read-only are incrementally given longer leases, for later renewals. In order to maintain these lease states, we add an n-bit counter to the cacheline that will keep track of a particular line’s “state.” Thus, if n is 2, for example, four states exist, namely 00, 01, 10, and 11. 
