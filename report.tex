@@ -11,9 +11,11 @@
 \date{}
 \begin{document}
 	\maketitle
-\begin{center}
-	\textbf{\large{Ethan Zou and Henry Liu}}
-\end{center}
+
+\begin{abstract}
+In a world where data and information are being processed and transferred at an ever-increasing rate, the need for multiple processors has become popular in recent years. With multi-processor machines, computing power is significantly improved, but the problem of sharing memory between cores, or memory coherence, arises. A recently proposed solution that is both simpler and more scalable than the widely used directory coherence, TARDIS, uses timestamp counters to logically order memory operations to maintain sequential consistency, as opposed to using physical time. The vanilla TARDIS protocol, however, uses long hardware counters for timestamp storage. Additionally, for some applications, TARDIS generates a large number of renew requests which consumes the precious network bandwidth. Thus, we propose several optimizations: a timestamp compression scheme to reduce the memory cost of storing timestamps, and several lease predictor protocols to increase efficiency by minimizing the number of renewal requests due to cacheline expiration. [briefly mention results]
+\end{abstract}
+
 
 \section{Introduction}
 
@@ -29,7 +31,7 @@ In the modern day, there is a continuously increasing demand for faster computer
 
 Memory coherence is most commonly and traditionally addressed by directory based coherence protocols [cite something], which is relatively intuitive. In such a system a central directory tracks the coherence between the caches, or how they are being owned or shared between cores. Thus, if a core requests private ownership of a cacheline, it must go through the directory so that all other lines can be invalidated and updated accordingly. Since the directory must maintain the sharer information for every cacheline, the system requires O(N) storage per cacheline if there are N cores. As N increases, the directory based protocol does not scale well.
 
-This problem is addressed by TARDIS, a new coherence protocol that is currently in development by Xiangyao Yu and Professor Srini Devadas and has been mathematically proven to be sequentially correct [citation?]. TARDIS utilizes logical timestamps (to be explained in more detail in Background) to enforce the global memory order. The protocol only requires O(log N) storage per cacheline and is therefore significantly more scalable as well as being simpler. However, the major disadvantages of the vanilla TARDIS protocol is managing very large timestamps and dealing with potentially many renewal requests, most of which are unnecessary. 
+This problem is addressed by TARDIS, a new coherence protocol that is currently in development and has been mathematically proven to be sequentially correct [citation?]. TARDIS utilizes logical timestamps (to be explained in more detail in Background) to enforce the global memory order. The protocol only requires O(log N) storage per cacheline and is therefore significantly more scalable as well as being simpler. However, the major disadvantages of the vanilla TARDIS protocol is managing very large timestamps and dealing with potentially many renewal requests, most of which are unnecessary. 
 
 The goal of this paper is to explore the expansive design space of TARDIS and optimize the protocol through timestamp compression and renewal minimization. We implemented a clever base timestamp + delta scheme to reduce the storage overhead of timestamps, implemented and analyzed several configurations of lease protocols to reduce the number of renewals, and designed a livelock detection algorithm to prevent several worst-case-scenarios of spinning variables
 

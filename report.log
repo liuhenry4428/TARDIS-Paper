@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.10.28)  15 SEP 2015 23:27
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.10.28)  15 SEP 2015 23:48
 entering extended mode
 **report.tex
 (C:\Users\Ethan.MININT-HMMN23A\Documents\GitHub\TARDIS-Paper\report.tex
@@ -165,7 +165,7 @@ LaTeX Warning: No \author given.
 <gfx/multicores.jpg, id=1, 338.9463pt x 164.7756pt>
 File: gfx/multicores.jpg Graphic file (type jpg)
  <use gfx/multicores.jpg>
-Package pdftex.def Info: gfx/multicores.jpg used on input line 22.
+Package pdftex.def Info: gfx/multicores.jpg used on input line 24.
 (pdftex.def)             Requested size: 170.71652pt x 82.99352pt.
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
@@ -177,15 +177,14 @@ Missing character: There is no ù in font cmr12!
 [1
 
 {C:/Users/Ethan.MININT-HMMN23A/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.ma
-p} <C:/Users/Ethan.MININT-HMMN23A/Documents/GitHub/TARDIS-Paper/gfx/multicores.
-jpg>]
+p}] [2 <C:/Users/Ethan.MININT-HMMN23A/Documents/GitHub/TARDIS-Paper/gfx/multico
+res.jpg>]
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ú in font cmr12!
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ù in font cmr12!
- [2]
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ú in font cmr12!
@@ -195,11 +194,11 @@ Missing character: There is no ù in font cmr12!
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ô in font cmr12!
- [3] <gfx/image1.png, id=15, 1194.4625pt x 234.8775pt>
+ [3] [4] <gfx/image1.png, id=20, 1194.4625pt x 234.8775pt>
 File: gfx/image1.png Graphic file (type png)
 
 <use gfx/image1.png>
-Package pdftex.def Info: gfx/image1.png used on input line 62.
+Package pdftex.def Info: gfx/image1.png used on input line 64.
 (pdftex.def)             Requested size: 455.24408pt x 89.51958pt.
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
@@ -210,7 +209,6 @@ Missing character: There is no ú in font cmr12!
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ù in font cmr12!
- [4]
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ü in font cmr12!
 Missing character: There is no í in font cmr12!
@@ -228,13 +226,14 @@ Missing character: There is no ô in font cmr12!
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ô in font cmr12!
+ [6]
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ú in font cmr12!
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ù in font cmr12!
- [6] [7]
+ [7]
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ú in font cmr12!
@@ -250,20 +249,22 @@ Missing character: There is no ô in font cmr12!
  [8]
 (C:\Users\Ethan.MININT-HMMN23A\Documents\GitHub\TARDIS-Paper\report.aux) ) 
 Here is how much of TeX's memory you used:
- 1661 strings out of 493921
- 22996 string characters out of 3147637
+ 1663 strings out of 493921
+ 23022 string characters out of 3147637
  82853 words of memory out of 3000000
- 4979 multiletter control sequences out of 15000+200000
- 6370 words of font info for 23 fonts, out of 3000000 for 9000
+ 4980 multiletter control sequences out of 15000+200000
+ 6671 words of font info for 24 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  27i,6n,32p,1221b,262s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/P
-rogram Files/MiKTeX2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Fi
-les/MiKTeX2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX
-2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on report.pdf (8 pages, 180596 bytes).
+rogram Files/MiKTeX2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Fi
+les/MiKTeX2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTe
+X2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX2.9/fonts
+/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX2.9/fonts/type1/pub
+lic/amsfonts/cm/cmr17.pfb>
+Output written on report.pdf (8 pages, 209495 bytes).
 PDF statistics:
- 43 PDF objects out of 1000 (max. 8388607)
+ 51 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
