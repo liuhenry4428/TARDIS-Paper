@@ -5,6 +5,8 @@
 \usepackage{graphicx}
 \graphicspath{ {gfx/} }
 \usepackage[capitalize]{cleveref}
+\usepackage{subfig}
+
 
 %\DeclareGraphicsExtensions{.pdf,.jpg,.png}
 \doublespacing
@@ -220,6 +222,16 @@ Please cover at least the following points in \cref{fig:tssize}:
 
 \subsection{Livelock Detection}
 
+\begin{figure}
+	\centering
+	\subfloat[Thruoghput and Network Traffic]{
+		\includegraphics[width=0.95\columnwidth]{figs/selfincr_nolive.pdf}}
+	\\
+	\subfloat[Renew Rate]{
+		\includegraphics[width=0.95\columnwidth]{figs/selfincr_nolive_renew.pdf}}
+	\caption{ Performance of Tardis sweeping the delta timestamp size}
+	\label{fig:tssize}
+\end{figure}
 
 
 
