@@ -4,6 +4,8 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{graphicx}
 \graphicspath{ {gfx/} }
+\usepackage{cleveref}
+
 %\DeclareGraphicsExtensions{.pdf,.jpg,.png}
 \doublespacing
 \title{[Come up with title]}
@@ -46,7 +48,7 @@ The cachelines in shared memory can be in two states, shared and exclusive. A ca
 Take the following example:
 [Example program from original paper here]
 
-\section{Optimizations}
+\section{Optimizations} \label{sec:optimization}
 
 In this section, we will detail the three optimizations we  have implemented to improve the efficiency and storage overhead of TARDIS.
 
@@ -135,9 +137,50 @@ The problem with livelock occurs when a core needs to wait for one or more cache
 
 \section{Methodology}
 
-[Xiangyao to write about this]
+We used the Graphite simulator~\cite{graphite} to model our multicore 
+architecture. Graphite was developed at MIT and is able to simulate 
+systems with up to 1000 cores. In this report, we only simulate a 
+64-core system, which matches the latest Intel multicore 
+processor~\cite{xeonphi}. Each core has a 32~kB private cache and all 
+cores share a 8~MB shared cache. All the cores and caches are 
+connected using an on-chip network with MESH topology.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+\begin{table}
+	\caption{ Default Configuration of Tardis. }
+	\begin{center}
+	{ 
+		\begin{tabular}{|l|l|}
+            \hline
+			\multicolumn{2}{|c|}{Timestamp Compression} \\
+			\hline
+			Delta timestamp size 		& 20~bits \\
+			L1 Rebase Overhead 			& 128~ns\\
+			L2 Rebase Overhead			& 1024~ns \\
+			\hline
+			\multicolumn{2}{|c|}{Livelock Detection} \\
+			\hline
+			Livelock detection 			& turned on \\
+			Self increment period 		& 1000 \\
+			\hline
+			\multicolumn{2}{|c|}{Livelock Detection} \\
+			\hline
+			Lease prediction			& turned on \\
+			Start lease 				& 8 \\
+			Increase factor				& 2 \\
+			\hline
+		\end{tabular}
+    }
+	\end{center}
+    \label{tab:system}
+	\vspace{-.2in}
+\end{table}
+
+\cref{tab:system} shows the default configuration of Tardis. By 
+default, all the three optimizations introduced in 
+\cref{sec:optimization} are turned on. The default delta timestamp 
+size is 20~bits. The rebased overhead for L1 and L2 cache is 128~ns 
+and 1024~ns respectively. During this rebase time, the cache is not 
+able to serve other requests.    
 
 \section{Evaluations}
 
@@ -146,4 +189,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 \section{Conclusion}
 	TARDIS is a new scheme to ensure memory coherence. Its main advantages are its scalability, simplicity, and to perform operations that “travel in time.” It uses logical time by incorporating timestamps in cachelines and cores. We tested multiple optimizations involving timestamp compression, lease prediction, and livelock detection, and were successful in increasing TARDIS’s speed and efficiency overall (we should run a test to comepare baseline TARDIS with all of our optimizations). We tested a variety of benchmarks on 64 core simulated machines via the Graphite simulator on MIT CSAIL’s Cagnode servers.
 
+{
+	\bibliographystyle{abbrv}
+	\bibliography{refs}
+}
 \end{document}
+
