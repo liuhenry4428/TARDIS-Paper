@@ -4,7 +4,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{graphicx}
 \graphicspath{ {gfx/} }
-\usepackage{cleveref}
+\usepackage[capitalize]{cleveref}
 
 %\DeclareGraphicsExtensions{.pdf,.jpg,.png}
 \doublespacing
@@ -175,16 +175,53 @@ connected using an on-chip network with MESH topology.
 	\vspace{-.2in}
 \end{table}
 
-\cref{tab:system} shows the default configuration of Tardis. By 
-default, all the three optimizations introduced in 
-\cref{sec:optimization} are turned on. The default delta timestamp 
-size is 20~bits. The rebased overhead for L1 and L2 cache is 128~ns 
-and 1024~ns respectively. During this rebase time, the cache is not 
-able to serve other requests.    
+\cref{tab:system} shows the default configuration of Tardis. All the 
+three optimizations introduced in \cref{sec:optimization} are turned 
+on by default. The default delta timestamp size is 20~bits. The 
+rebased overhead for L1 and L2 cache is 128~ns and 1024~ns 
+respectively. During this rebase time, the cache is not able to serve 
+other requests. The default self increment period is chosen to be 
+1000. The start lease is 8 for each cacheline and the increase factor 
+is 2. Unless otherwise stated, all the experiments use these 
+parameters by default.
+
+We use a subset of Splash-2~\cite{splash2} benchmarks to evaluate our 
+optimization techniques. For each experiment, we show the speedup (in 
+bars) and the amount of network traffic (in red dots) for each 
+benchmark. For some Tardis experiments, we also show the rate of 
+renewals, i.e., the precentage of renew requests out of all L2 cache 
+requests.     
 
 \section{Evaluations}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+In this section, we evaluate the performance of the optimization 
+techniques introduced in \cref{sec:optimization}.
+
+\subsection{Timestamp Compression}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.95\textwidth]{figs/tssize.pdf}
+	\caption{ Performance of Tardis sweeping the delta timestamp size}
+	\label{fig:tssize}
+\end{figure}
+
+Please cover at least the following points in \cref{fig:tssize}:
+
+- size = 14 has bad performance because of frequent rebase.
+
+- As logn as delta timestamp size is large enough, performance is not 
+  sensitive to the timestamp size.
+
+- We chose size = 20 as the default value since it provides reasonable 
+  performance over all benchmarks.
+
+
+
+\subsection{Livelock Detection}
+
+
+
 
 \section{Conclusion}
 	TARDIS is a new scheme to ensure memory coherence. Its main advantages are its scalability, simplicity, and to perform operations that “travel in time.” It uses logical time by incorporating timestamps in cachelines and cores. We tested multiple optimizations involving timestamp compression, lease prediction, and livelock detection, and were successful in increasing TARDIS’s speed and efficiency overall (we should run a test to comepare baseline TARDIS with all of our optimizations). We tested a variety of benchmarks on 64 core simulated machines via the Graphite simulator on MIT CSAIL’s Cagnode servers.
