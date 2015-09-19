@@ -200,10 +200,7 @@ parameters by default.
 
 We use a subset of Splash-2~\cite{splash2} benchmarks to evaluate our 
 optimization techniques. For each experiment, we show the speedup (in 
-bars) and the amount of network traffic (in red dots) for each 
-benchmark. For some Tardis experiments, we also show the rate of 
-renewals, i.e., the precentage of renew requests out of all L2 cache 
-requests.     
+bars) and the renew rate (in red dots) for each benchmark.
 
 \section{Evaluations}
 
@@ -214,23 +211,19 @@ techniques introduced in \cref{sec:optimization}.
 
 \begin{figure}
 	\centering
-	\subfloat[Thruoghput and Network Traffic]{
-		\includegraphics[width=0.95\columnwidth]{figs/main.pdf}}
-	\\
-	\subfloat[Renew Rate]{
-		\includegraphics[width=0.95\columnwidth]{figs/main_renew.pdf}}
+	\includegraphics[width=0.95\columnwidth]{figs/main.pdf}
 	\caption{ Tardis with different optimization techniques.}
 	\label{fig:main}
 \end{figure}
 
-\cref{fig:main} summarizes the performnace improvement of the 
+\cref{fig:main} summarizes the performance improvement of the 
 optimization techniques introduced in this report. Here we show the 
-performance of the baseline MSI protocol, the baseline Tardis 
-prototal~\cite{yu2015}, the baseline Tardis with livelock 
+performance of the baseline directory protocol, the baseline Tardis 
+protocol~\cite{yu2015}, the baseline Tardis with livelock 
 detection~\cref{sec:livelck-detection} and Tardis with both livelock 
 detection and lease prediction~\cref{sec:lease-prediction}.
 
-Poitns to discuss
+Points to discuss
 
 - Livelock detection improves performance for benchmarks heavily using 
   spinning.
@@ -251,7 +244,7 @@ Please cover at least the following points in \cref{fig:tssize}:
 
 - size = 14 has bad performance because of frequent rebase.
 
-- As logn as delta timestamp size is large enough, performance is not 
+- As long as delta timestamp size is large enough, performance is not 
   sensitive to the timestamp size.
 
 - We chose size = 20 as the default value since it provides reasonable 
@@ -261,11 +254,7 @@ Please cover at least the following points in \cref{fig:tssize}:
 
 \begin{figure}
 	\centering
-	\subfloat[Thruoghput and Network Traffic]{
-		\includegraphics[width=0.95\columnwidth]{figs/selfincr_nolive.pdf}}
-	\\
-	\subfloat[Renew Rate]{
-		\includegraphics[width=0.95\columnwidth]{figs/selfincr_nolive_renew.pdf}}
+	\includegraphics[width=0.95\columnwidth]{figs/selfincr_nolive.pdf}
 	\caption{ Baseline Tardis without livelock detection. }
 	\label{fig:self-nolive}
 \end{figure}
@@ -278,11 +267,7 @@ For \cref{fig:self-nolive}, at least discuss the following points:
 
 \begin{figure}
 	\centering
-	\subfloat[Thruoghput and Network Traffic]{
-		\includegraphics[width=0.95\columnwidth]{figs/selfincr_live.pdf}}
-	\\
-	\subfloat[Renew Rate]{
-		\includegraphics[width=0.95\columnwidth]{figs/selfincr_live_renew.pdf}}
+	\includegraphics[width=0.95\columnwidth]{figs/selfincr_live.pdf}
 	\caption{ Tardis with livelock detection. }
 	\label{fig:self-live}
 \end{figure}
@@ -300,11 +285,7 @@ For \cref{fig:self-live}, at least discuss the following:
 
 \begin{figure}
 	\centering
-	\subfloat[Thruoghput and Network Traffic]{
-		\includegraphics[width=0.95\columnwidth]{figs/static.pdf}}
-	\\
-	\subfloat[Renew Rate]{
-		\includegraphics[width=0.95\columnwidth]{figs/static_renew.pdf}}
+	\includegraphics[width=0.95\columnwidth]{figs/static.pdf}
 	\caption{ Sweeping the static lease.  }
 	\label{fig:static}
 \end{figure}
@@ -322,11 +303,7 @@ detection is enabled in this experiment. Discuss the following points:
 
 \begin{figure}
 	\centering
-	\subfloat[Thruoghput and Network Traffic]{
-		\includegraphics[width=0.95\columnwidth]{figs/exp.pdf}}
-	\\
-	\subfloat[Renew Rate]{
-		\includegraphics[width=0.95\columnwidth]{figs/exp_renew.pdf}}
+	\includegraphics[width=0.95\columnwidth]{figs/exp.pdf}
 	\caption{ Sweeping the increase factor for lease prediction 
 	algorithm.}
 	\label{fig:exp}
