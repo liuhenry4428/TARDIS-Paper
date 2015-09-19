@@ -1,5 +1,5 @@
 PAPER = report
-TEX = $(wildcard *.tex)
+TEX = report.tex
 BIB = refs.bib
 FIGS = $(wildcard figs/*.pdf)
 

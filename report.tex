@@ -69,7 +69,7 @@ In this section, we will detail the three optimizations we  have implemented to 
 
 One of the major structural changes implemented in TARDIS is the inclusion of two timestamps in each cacheline. This translates to a large additional requirement for memory, so the optimization of timestamp compression was researched to reduce storage costs. We exploit the fact that the two timestamps of each cacheline are usually fairly close, so we implement a base timestamp (bts) and a delta = rts-wts, the difference between the timestamps. The timestamps were originally 64 bits each, so two timestamps per 512 bits of data is a 25\% storage overhead, and not efficient.  With the bts and delta, we were able to dramatically reduce storage costs, but we encountered the problem with timestamp rollover, where a timestamp would numerically increase beyond what the bts + delta scheme could support.
 
-\subsection{Lease Prediction}
+\subsection{Lease Prediction} \label{sec:lease-prediction}
 \begin{center}
 
 \begin{tabular}{p{5cm} p{5cm}}
@@ -210,6 +210,34 @@ requests.
 In this section, we evaluate the performance of the optimization 
 techniques introduced in \cref{sec:optimization}.
 
+\subsection{Main Result}
+
+\begin{figure}
+	\centering
+	\subfloat[Thruoghput and Network Traffic]{
+		\includegraphics[width=0.95\columnwidth]{figs/main.pdf}}
+	\\
+	\subfloat[Renew Rate]{
+		\includegraphics[width=0.95\columnwidth]{figs/main_renew.pdf}}
+	\caption{ Tardis with different optimization techniques.}
+	\label{fig:main}
+\end{figure}
+
+\cref{fig:main} summarizes the performnace improvement of the 
+optimization techniques introduced in this report. Here we show the 
+performance of the baseline MSI protocol, the baseline Tardis 
+prototal~\cite{yu2015}, the baseline Tardis with livelock 
+detection~\cref{sec:livelck-detection} and Tardis with both livelock 
+detection and lease prediction~\cref{sec:lease-prediction}.
+
+Poitns to discuss
+
+- Livelock detection improves performance for benchmarks heavily using 
+  spinning.
+
+- Both livelock detection and lease prediction reduce renew rate and 
+  network traffic.
+
 \subsection{Timestamp Compression}
 
 \begin{figure}
@@ -251,13 +279,68 @@ For \cref{fig:self-nolive}, at least discuss the following points:
 \begin{figure}
 	\centering
 	\subfloat[Thruoghput and Network Traffic]{
-		\includegraphics[width=0.95\columnwidth]{figs/selfincr_nolive.pdf}}
+		\includegraphics[width=0.95\columnwidth]{figs/selfincr_live.pdf}}
 	\\
 	\subfloat[Renew Rate]{
-		\includegraphics[width=0.95\columnwidth]{figs/selfincr_nolive_renew.pdf}}
-	\caption{ Baseline Tardis without livelock detection. }
-	\label{fig:self-nolive}
+		\includegraphics[width=0.95\columnwidth]{figs/selfincr_live_renew.pdf}}
+	\caption{ Tardis with livelock detection. }
+	\label{fig:self-live}
 \end{figure}
+
+For \cref{fig:self-live}, at least discuss the following:
+
+- the renew messages in this experiment contains both renewals and 
+  checks.
+
+- Similar to \cref{fig:self-nolive}, increasing the self increment 
+  period reduces the renew rate and network traffic. However, larger 
+  self increment period does not hurt performance, because blabla...
+
+\subsection{Lease Prediction}
+
+\begin{figure}
+	\centering
+	\subfloat[Thruoghput and Network Traffic]{
+		\includegraphics[width=0.95\columnwidth]{figs/static.pdf}}
+	\\
+	\subfloat[Renew Rate]{
+		\includegraphics[width=0.95\columnwidth]{figs/static_renew.pdf}}
+	\caption{ Sweeping the static lease.  }
+	\label{fig:static}
+\end{figure}
+
+\cref{fig:static} sweeps the static lease from 4 to 16. Livelock 
+detection is enabled in this experiment. Discuss the following points:
+
+- performance is not sensitive to the value of static lease. However, 
+  this is because we enabled livelock detection. Without livelock 
+  detection, performance drops with large lease values for benchmarks 
+  heavily use spinning.
+
+- renew rate slightly reduces for most benchmarks because of less 
+  renew requests.
+
+\begin{figure}
+	\centering
+	\subfloat[Thruoghput and Network Traffic]{
+		\includegraphics[width=0.95\columnwidth]{figs/exp.pdf}}
+	\\
+	\subfloat[Renew Rate]{
+		\includegraphics[width=0.95\columnwidth]{figs/exp_renew.pdf}}
+	\caption{ Sweeping the increase factor for lease prediction 
+	algorithm.}
+	\label{fig:exp}
+\end{figure}
+
+\cref{fig:exp} shows the performance of our lease prediction algorithm 
+discussed in \cref{sec:lease-prediction}. Discuss the following 
+points:
+
+- lease prediction algorithm does not affect throughput.
+
+- lease prediction reduces renewal rate and network traffic. The 
+  reduction is more significant than simply using a larger static 
+  lease (\cref{fig:static}).
 
 
 
