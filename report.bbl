@@ -1,0 +1,20 @@
+\begin{thebibliography}{1}
+
+\bibitem{xeonphi}
+Intel.
+\newblock {Intel Xeon Phi Coprocessor System Software Developers Guide}, 2014.
+
+\bibitem{graphite}
+J.~E. Miller, H.~Kasture, G.~Kurian, C.~Gruenwald, N.~Beckmann, C.~Celio,
+  J.~Eastep, and A.~Agarwal.
+\newblock {Graphite: A Distributed Parallel Simulator for Multicores}.
+\newblock In {\em International Symposium on High-Performance Computer
+  Architecture}, 2010.
+
+\bibitem{splash2}
+S.~C. Woo, M.~Ohara, E.~Torrie, J.~P. Singh, and A.~Gupta.
+\newblock {The SPLASH-2 Programs: Characterization and Methodological
+  Considerations}.
+\newblock In {\em International Symposium on Computer Architecture}, 1995.
+
+\end{thebibliography}
