@@ -218,8 +218,6 @@ Please cover at least the following points in \cref{fig:tssize}:
 - We chose size = 20 as the default value since it provides reasonable 
   performance over all benchmarks.
 
-
-
 \subsection{Livelock Detection}
 
 \begin{figure}
@@ -229,8 +227,25 @@ Please cover at least the following points in \cref{fig:tssize}:
 	\\
 	\subfloat[Renew Rate]{
 		\includegraphics[width=0.95\columnwidth]{figs/selfincr_nolive_renew.pdf}}
-	\caption{ Performance of Tardis sweeping the delta timestamp size}
-	\label{fig:tssize}
+	\caption{ Baseline Tardis without livelock detection. }
+	\label{fig:self-nolive}
+\end{figure}
+
+For \cref{fig:self-nolive}, at least discuss the following points:
+
+- For baseline Tardis, both performance and renew rate go down as self
+  increment period increases. Performance goes down for some
+  benchmarks because of spinning.
+
+\begin{figure}
+	\centering
+	\subfloat[Thruoghput and Network Traffic]{
+		\includegraphics[width=0.95\columnwidth]{figs/selfincr_nolive.pdf}}
+	\\
+	\subfloat[Renew Rate]{
+		\includegraphics[width=0.95\columnwidth]{figs/selfincr_nolive_renew.pdf}}
+	\caption{ Baseline Tardis without livelock detection. }
+	\label{fig:self-nolive}
 \end{figure}
 
 
