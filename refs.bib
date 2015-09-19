@@ -1,0 +1,833 @@
+
+@inproceedings{graphite,
+  title = "{Graphite: A Distributed Parallel Simulator for Multicores}",
+  author = {Jason E. Miller and Harshad Kasture and George Kurian and
+            Charles Gruenwald and Nathan Beckmann and Christopher Celio and
+            Jonathan Eastep and Anant Agarwal},
+  booktitle = {International Symposium on High-Performance Computer Architecture},
+  year = {2010}
+}
+
+@inproceedings{ATAC,
+   booktitle = {International Conference on Parallel Architectures and Compilation Techniques},
+   author = {George Kurian and Jason Miller and James Psota and Jonathan Eastep and Jifeng Liu and Jurgen Michel and Lionel Kimerling and Anant Agarwal},
+   title = "{ATAC: A 1000-Core Cache-Coherent Processor with On-Chip Optical Network}",
+   year = {2010}
+}
+
+@INPROCEEDINGS{abts-09,
+    author = {Dennis Abts and Natalie Enright and Jerger John Kim and Dan Gibson and Mikko Lipasti and Google Inc},
+    title = {Achieving predictable performance through better memory controller placement in many-core cmps},
+    booktitle = {In ISCA ’09: Proceedings of the 36th annual international symposium on Computer architecture},
+    year = {2009}
+}
+
+@article{tomasulo67,
+  title={An efficient algorithm for exploiting multiple arithmetic units},
+  author={Tomasulo, Robert M},
+  journal={IBM Journal of research and Development},
+  volume={11},
+  number={1},
+  pages={25--33},
+  year={1967},
+  publisher={IBM}
+}
+
+@inproceedings{mutlu03,
+  title={Runahead execution: An alternative to very large instruction windows for out-of-order processors},
+  author={Mutlu, Onur and Stark, Jared and Wilkerson, Chris and Patt, Yale N},
+  booktitle={High-Performance Computer Architecture, 2003. HPCA-9 2003. Proceedings. The Ninth International Symposium on},
+  pages={129--140},
+  year={2003},
+  organization={IEEE}
+}
+
+@article{kamruzzaman11,
+  title={Inter-core prefetching for multicore processors using migrating helper threads},
+  author={Kamruzzaman, Md and Swanson, Steven and Tullsen, Dean M},
+  journal={ACM SIGARCH Computer Architecture News},
+  volume={39},
+  number={1},
+  pages={393--404},
+  year={2011},
+  publisher={ACM}
+}
+
+@article{flynn72,
+  title={Some computer organizations and their effectiveness},
+  author={Flynn, Michael},
+  journal={Computers, IEEE Transactions on},
+  volume={100},
+  number={9},
+  pages={948--960},
+  year={1972},
+  publisher={IEEE}
+}
+
+@misc{xeonphi,
+  title="{Intel Xeon Phi Coprocessor System Software Developers Guide}",
+  author={Intel},
+  year={2014},
+}
+
+@book{hennessy2012,
+  title={Computer architecture: a quantitative approach},
+  author={Hennessy, John L and Patterson, David A},
+  year={2012},
+  publisher={Elsevier}
+}
+
+@misc{tilera,
+  title={TILE-GX family of multicore processors},
+  howpublished = {\url{http://www.tilera.com}}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% Multithreading and SMT
+%%%%%%%%%%%%%%%%%%%%%%%
+
+@inproceedings{tullsen95,
+  title={Simultaneous multithreading: Maximizing on-chip parallelism},
+  author={Tullsen, Dean M and Eggers, Susan J and Levy, Henry M},
+  booktitle={ACM SIGARCH Computer Architecture News},
+  volume={23},
+  number={2},
+  pages={392--403},
+  year={1995},
+  organization={ACM}
+}
+
+@inproceedings{konecny07,
+  title={Introducing the Cray XMT},
+  author={Konecny, Petr},
+  booktitle={Proc. Cray User Group meeting (CUG 2007). Seattle, WA: CUG Proceedings},
+  year={2007}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% Hardware Prefetching
+%%%%%%%%%%%%%%%%%%%%%%%
+
+@article{chen95,
+  title={Effective hardware-based data prefetching for high-performance processors},
+  author={Chen, Tien-Fu and Baer, Jean-Loup},
+  journal={Computers, IEEE Transactions on},
+  volume={44},
+  number={5},
+  pages={609--623},
+  year={1995},
+  publisher={IEEE}
+}
+
+@inproceedings{joseph97,
+  title={Prefetching using Markov predictors},
+  author={Joseph, Doug and Grunwald, Dirk},
+  booktitle={ACM SIGARCH Computer Architecture News},
+  volume={25},
+  number={2},
+  pages={252--263},
+  year={1997},
+  organization={ACM}
+}
+
+@article{nesbit05,
+  title={Data cache prefetching using a global history buffer},
+  author={Nesbit, Kyle J and Smith, James E},
+  journal={Micro, IEEE},
+  volume={25},
+  number={1},
+  pages={90--97},
+  year={2005},
+  publisher={IEEE}
+}
+
+@inproceedings{jain13,
+  title={Linearizing irregular memory accesses for improved correlated prefetching},
+  author={Jain, Akanksha and Lin, Calvin},
+  booktitle={Proceedings of the 46th Annual IEEE/ACM International Symposium on Microarchitecture},
+  pages={247--259},
+  year={2013},
+  organization={ACM}
+}
+
+@article{wenisch10,
+  title={Making address-correlated prefetching practical},
+  author={Wenisch, Thomas F and Ferdman, Michael and Ailamaki, Anastasia and Falsafi, Babak and Moshovos, Andreas},
+  journal={IEEE Micro Top Picks},
+  volume={30},
+  number={EPFL-ARTICLE-147354},
+  pages={50--59},
+  year={2010}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% Software Prefetching
+%%%%%%%%%%%%%%%%%%%%%%%
+
+@article{vanderwiel00,
+  title={Data prefetch mechanisms},
+  author={Vanderwiel, Steven P and Lilja, David J},
+  journal={ACM Computing Surveys (CSUR)},
+  volume={32},
+  number={2},
+  pages={174--199},
+  year={2000},
+  publisher={ACM}
+}
+
+@inproceedings{mowry92,
+  title={Design and evaluation of a compiler algorithm for prefetching},
+  author={Mowry, Todd C and Lam, Monica S and Gupta, Anoop},
+  booktitle={ACM Sigplan Notices},
+  volume={27},
+  number={9},
+  pages={62--73},
+  year={1992},
+  organization={ACM}
+}
+
+@article{mowry91,
+  title={Tolerating latency through software-controlled prefetching in shared-memory multiprocessors},
+  author={Mowry, Todd and Gupta, Anoop},
+  journal={Journal of parallel and Distributed Computing},
+  volume={12},
+  number={2},
+  pages={87--106},
+  year={1991},
+  publisher={Elsevier}
+}
+
+@inproceedings{klaiber91,
+  title={An architecture for software-controlled data prefetching},
+  author={Klaiber, Alexander C and Levy, Henry M},
+  booktitle={ACM SIGARCH Computer Architecture News},
+  volume={19},
+  number={3},
+  pages={43--53},
+  year={1991},
+  organization={ACM}
+}
+
+@inproceedings{lipasti95,
+  title={SPAID: Software prefetching in pointer-and call-intensive environments},
+  author={Lipasti, Mikko H and Schmidt, William J and Kunkel, Steven R and Roediger, Robert R},
+  booktitle={Proceedings of the 28th annual international symposium on Microarchitecture},
+  pages={231--236},
+  year={1995},
+  organization={IEEE Computer Society Press}
+}
+
+@inproceedings{luk96,
+  title={Compiler-based prefetching for recursive data structures},
+  author={Luk, Chi-Keung and Mowry, Todd C},
+  booktitle={ACM SIGOPS Operating Systems Review},
+  volume={30},
+  number={5},
+  pages={222--233},
+  year={1996},
+  organization={ACM}
+}
+
+@inproceedings{roth98,
+  title={Dependence based prefetching for linked data structures},
+  author={Roth, Amir and Moshovos, Andreas and Sohi, Gurindar S},
+  booktitle={ACM SIGOPS Operating Systems Review},
+  volume={32},
+  number={5},
+  pages={115--126},
+  year={1998},
+  organization={ACM}
+}
+
+@inproceedings{krishnaiyer13,
+  title={Compiler-based data prefetching and streaming non-temporal store generation for the intel (r) xeon phi (tm) coprocessor},
+  author={Krishnaiyer, Rakesh and Kultursay, Emre and Chawla, Pankaj and Preis, Serguei and Zvezdin, Anatoly and Saito, Hideki},
+  booktitle={Parallel and Distributed Processing Symposium Workshops \& PhD Forum (IPDPSW), 2013 IEEE 27th International},
+  pages={1575--1586},
+  year={2013},
+  organization={IEEE}
+}
+
+@misc{icc-prefetch,
+    title = {Compiler Prefetching for the Intel Xeon Phi coprocessor},
+    month = {August},
+    year = {2013},
+    howpublished = {http://intel.ly/1yJGgAG}
+}
+
+@misc{silvermont,
+  title = {Intel Launches Low-Power, High-Performance Silvermont Microarchitecture},
+  month = {May},
+  year = {2013},
+  howpublished = {http://intel.ly/1pFRQwV}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Helper Thread
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@inproceedings{luk01,
+  title="{Tolerating memory latency through software-controlled pre-execution in simultaneous multithreading processors}",
+  author={Luk, Chi-Keung},
+  booktitle={Computer Architecture, 2001. Proceedings. 28th Annual International Symposium on},
+  pages={40--51},
+  year={2001},
+  organization={IEEE}
+}
+
+@inproceedings{collins01,
+  title="{Speculative precomputation: Long-range prefetching of delinquent loads}",
+  author={Collins, Jamison D and Wang, Hong and Tullsen, Dean M and Hughes, Christopher and Lee, Yong-Fong and Lavery, Dan and Shen, John P},
+  booktitle={ACM SIGARCH Computer Architecture News},
+  volume={29},
+  number={2},
+  pages={14--25},
+  year={2001},
+  organization={ACM}
+}
+
+@inproceedings{zilles01,
+  title="{Execution-based prediction using speculative slices}",
+  author={Zilles, Craig and Sohi, Gurindar},
+  booktitle={Computer Architecture, 2001. Proceedings. 28th Annual International Symposium on},
+  pages={2--13},
+  year={2001},
+  organization={IEEE}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% sector cache
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@article{liptay68,
+  title="{Structural aspects of the System/360 Model 85, II: The cache}",
+  author={Liptay, John S.},
+  journal={IBM Systems Journal},
+  volume={7},
+  number={1},
+  pages={15--21},
+  year={1968},
+  publisher={IBM}
+}
+
+@inproceedings{rothman00,
+  title="{Sector cache design and performance}",
+  author={Rothman, Jeffrey B and Smith, Alan Jay},
+  booktitle={Modeling, Analysis and Simulation of Computer and Telecommunication Systems, 2000. Proceedings. 8th International Symposium on},
+  pages={124--133},
+  year={2000},
+  organization={IEEE}
+}
+
+@article{hill89,
+  title="{Evaluating associativity in CPU caches}",
+  author={Hill, Mark D and Smith, Alan Jay},
+  journal={Computers, IEEE Transactions on},
+  volume={38},
+  number={12},
+  pages={1612--1630},
+  year={1989},
+  publisher={IEEE}
+}
+
+@article{yoon11,
+  title="{Adaptive granularity memory systems: a tradeoff between storage efficiency and throughput}",
+  author={Yoon, Doe Hyun and Jeong, Min Kyu and Erez, Mattan},
+  journal={ACM SIGARCH Computer Architecture News},
+  volume={39},
+  number={3},
+  pages={295--306},
+  year={2011},
+  publisher={ACM}
+}
+
+@inproceedings{yoon12,
+  title="{The dynamic granularity memory system}",
+  author={Yoon, Doe Hyun and Jeong, Min Kyu and Sullivan, Michael and Erez, Mattan},
+  booktitle={ACM SIGARCH Computer Architecture News},
+  volume={40},
+  number={3},
+  pages={548--559},
+  year={2012},
+  organization={IEEE Computer Society}
+}
+
+@inproceedings{rhu13,
+  title="{A locality-aware memory hierarchy for energy-efficient GPU architectures}",
+  author={Rhu, Minsoo and Sullivan, Michael and Leng, Jingwen and Erez, Mattan},
+  booktitle={Proceedings of the 46th Annual IEEE/ACM International Symposium on Microarchitecture},
+  pages={86--98},
+  year={2013},
+  organization={ACM}
+}
+
+@inproceedings{ahn09,
+  title="{Future scaling of processor-memory interfaces}",
+  author={Ahn, Jung Ho and Jouppi, Norman P and Kozyrakis, Christos and Leverich, Jacob and Schreiber, Robert S},
+  booktitle={High Performance Computing Networking, Storage and Analysis, Proceedings of the Conference on},
+  pages={1--12},
+  year={2009},
+  organization={IEEE}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Benchmarks
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@article{page99,
+  title={The PageRank citation ranking: Bringing order to the web.},
+  author={Page, Lawrence and Brin, Sergey and Motwani, Rajeev and Winograd, Terry},
+  year={1999},
+  publisher={Stanford InfoLab}
+}
+
+@article{sundaram13,
+  title={Streaming similarity search over one billion tweets using parallel locality-sensitive hashing},
+  author={Sundaram, Narayanan and Turmukhametova, Aizana and Satish, Nadathur and Mostak, Todd and Indyk, Piotr and Madden, Samuel and Dubey, Pradeep},
+  journal={Proceedings of the VLDB Endowment},
+  volume={6},
+  number={14},
+  pages={1930--1941},
+  year={2013},
+  publisher={VLDB Endowment}
+}
+
+@article{matrixfactorization,
+  title={Matrix factorization techniques for recommender systems},
+  author={Koren, Yehuda and Bell, Robert and Volinsky, Chris},
+  journal={Computer},
+  volume={42},
+  number={8},
+  pages={30--37},
+  year={2009},
+  publisher={IEEE}
+}
+
+@article{chiba85,
+ author = {Chiba, Norishige and Nishizeki, Takao},
+ title = {Arboricity and Subgraph Listing Algorithms},
+ journal = {SIAM J. Comput.},
+ volume = {14},
+ number = {1},
+ month = feb,
+ year = {1985},
+ pages = {210--223},
+ publisher = {Society for Industrial and Applied Mathematics},
+} 
+
+@inproceedings{indyk98,
+ author = {Indyk, Piotr and Motwani, Rajeev},
+ title = {Approximate Nearest Neighbors: Towards Removing the Curse of Dimensionality},
+ booktitle = {Proceedings of the Thirtieth Annual ACM Symposium on Theory of Computing},
+ series = {STOC '98},
+ year = {1998},
+ pages = {604--613},
+ publisher = {ACM},
+} 
+
+@inproceedings{park2014,
+ author = {Park, Jongsoo and Smelyanskiy, Mikhail and Vaidyanathan, Karthikeyan and Heinecke, Alexander and Kalamkar, Dhiraj D. and Liu, Xing and Patwary, Md. Mosotofa Ali and Lu, Yutong and Dubey, Pradeep},
+ title = {Efficient Shared-memory Implementation of High-performance Conjugate Gradient Benchmark and Its Application to Unstructured Matrices},
+ booktitle = {Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis},
+ series = {SC '14},
+ year = {2014},
+ pages = {945--955},
+ publisher = {IEEE Press},
+ address = {Piscataway, NJ, USA},
+} 
+
+@article{dongarra2013,
+  title={Toward a new metric for ranking high performance computing systems},
+  author={Dongarra, Jack}
+}
+
+
+@misc{csr,
+  title="{Compressed Row Storage}",
+  howpublished={http://web.eecs.utk.edu/~dongarra/etemplates/node373.html},
+  author={Dongarra, Jack}
+}
+
+@inproceedings{satish_sigmod14,
+ author = {Satish, Nadathur and Sundaram, Narayanan and Patwary, Md. Mostofa Ali and Seo, Jiwon and Park, Jongsoo and Hassaan, M. Amber and Sengupta, Shubho and Yin, Zhaoming and Dubey, Pradeep},
+ title = "{Navigating the Maze of Graph Analytics Frameworks Using Massive Graph Datasets}",
+ booktitle = {Proceedings of SIGMOD 2014},
+ year = {2014},
+ pages = {979--990},
+ publisher = {ACM},
+} 
+
+@inproceedings{splash2,
+  author = {Woo, Steven Cameron and Ohara, Moriyoshi and Torrie, Evan and Singh, Jaswinder Pal and Gupta, Anoop},
+  title = "{The SPLASH-2 Programs: Characterization and Methodological Considerations}",
+  booktitle = {International Symposium on Computer Architecture},
+  year = {1995}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Consistency and coherence 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@article{lamport1979,
+  title="{How to make a multiprocessor computer that correctly executes multiprocess programs}",
+  author={Lamport, Leslie},
+  journal={Computers, IEEE Transactions on},
+  volume={100},
+  number={9},
+  pages={690--691},
+  year={1979},
+  publisher={IEEE}
+} 
+
+@article{weaver1994,
+  title="{The SPARC Architecture Manual}",
+  author={Weaver, David L and Germond, Tom},
+  year={1994}
+}
+
+@article{sewell2010,
+  title="{x86-TSO: a rigorous and usable programmer's model for x86 multiprocessors}",
+  author={Sewell, Peter and Sarkar, Susmit and Owens, Scott and Nardelli, Francesco Zappa and Myreen, Magnus O},
+  journal={Communications of the ACM},
+  volume={53},
+  number={7},
+  pages={89--97},
+  year={2010},
+  publisher={ACM}
+}
+% alpha consistency model
+@book{sites1992,
+  title="{Alpha architecture reference manual}",
+  author={Sites, Richard L},
+  year={1992},
+  publisher={Prentice Hall PTR}
+}
+% release consistency
+@book{gharachorloo1990,
+  title="{Memory consistency and event ordering in scalable shared-memory multiprocessors}",
+  author={Gharachorloo, Kourosh and Lenoski, Daniel and Laudon, James and Gibbons, Phillip and Gupta, Anoop and Hennessy, John},
+  volume={18},
+  number={2SI},
+  year={1990},
+  publisher={ACM}
+}
+% power PC memory model
+@techreport{corella1993,
+  title="{A formal specification of the PowerPC shared memory architecture}",
+  author={Corella, Francisco and Stone, Janice M and Barton, Charles M},
+  year={1993}
+}
+%i ARM architecture
+@book{seal2001,
+  title="{ARM architecture reference manual}",
+  author={Seal, David},
+  year={2001},
+  publisher={Pearson Education}
+}
+@incollection{hoffmann2010,
+  title="{Remote store programming}",
+  author={Hoffmann, Henry and Wentzlaff, David and Agarwal, Anant},
+  booktitle={High Performance Embedded Architectures and Compilers},
+  pages={3--17},
+  year={2010},
+  publisher={Springer}
+}
+
+@inproceedings{david2013,
+  title="{Everything you always wanted to know about synchronization but were afraid to ask}",
+  author={David, Tudor and Guerraoui, Rachid and Trigonakis, Vasileios},
+  booktitle={Proceedings of the Twenty-Fourth ACM Symposium on Operating Systems Principles},
+  pages={33--48},
+  year={2013},
+  organization={ACM}
+}
+
+@inproceedings{kurian2013,
+  title="{The locality-aware adaptive cache coherence protocol}",
+  author={Kurian, George and Khan, Omer and Devadas, Srinivas},
+  booktitle={Proceedings of the 40th Annual International Symposium on Computer Architecture},
+  pages={523--534},
+  year={2013},
+  organization={ACM}
+}
+
+@phdthesis{kurian2014,
+  title="{Locality-aware Cache Hierarchy Management for Multicore Processors}",
+  author={Kurian, George},
+  school={Massachusetts Institute of Technology},
+  year={2014}
+}
+
+@inproceedings{min1989,
+  title={A timestamp-based cache coherence scheme},
+  author={Min, Sang Lyul and Baer, Jean-Loup},
+  year={1989},
+  publisher={Citeseer}
+}
+
+@inproceedings{elver2014,
+  title="{TSO-CC: Consistency directed cache coherence for TSO}",
+  author={Elver, Marco and Nagarajan, Vijay},
+  booktitle={International Symposium on High Performance Computer Architecture},
+  pages={165--176},
+  year={2014}
+}
+
+@inproceedings{lis2011,
+  title="{Memory coherence in the age of multicores}",
+  author={Lis, Mieszko and Shim, Keun Sup and Cho, Myong Hyon and Devadas, Srinivas},
+  booktitle={Computer Design (ICCD), 2011 IEEE 29th International Conference on},
+  pages={1--8},
+  year={2011},
+  organization={IEEE}
+}
+
+@inproceedings{singh2013,
+  author = {Singh, Inderpreet and Shriraman, Arrvindh and Fung, Wilson W.  L. and O'Connor, Mike and Aamodt, Tor M.},
+  title = "{Cache Coherence for GPU Architectures}",
+  booktitle = {Proceedings of the 2013 IEEE 19th International Symposium on High Performance Computer Architecture (HPCA)},
+  year = {2013},
+  pages = {578--590}
+}
+
+@inproceedings{nandy1994,
+  title="{An Incessantly Coherent Cache Scheme for Shared Memory Multithreaded Systems}",
+  author={Nandy, SK and Narayan, Ranjani},
+  year={1994},
+  organization={Citeseer}
+}
+
+@inproceedings{plakal1998,
+  title="{Lamport clocks: verifying a directory cache-coherence protocol}",
+  author={Plakal, Manoj and Sorin, Daniel J and Condon, Anne E and Hill, Mark D},
+  booktitle={Proceedings of the tenth annual ACM symposium on Parallel algorithms and architectures},
+  pages={67--76},
+  year={1998},
+  organization={ACM}
+}
+
+@article{martin2000,
+  title="{Timestamp snooping: an approach for extending SMPs}",
+  author={Martin, Milo MK and Sorin, Daniel J and Ailamaki, Anatassia and Alameldeen, Alaa R and Dickson, Ross M and Mauer, Carl J and Moore, Kevin E and Plakal, Manoj and Hill, Mark D and Wood, David A},
+  journal={ACM SIGOPS Operating Systems Review},
+  volume={34},
+  number={5},
+  pages={25--36},
+  year={2000},
+  publisher={ACM}
+}
+
+@inproceedings{agarwal1998,
+  title="{An evaluation of directory schemes for cache coherence}",
+  author={Agarwal, Anant and Simoni, Richard and Hennessy, John and Horowitz, Mark},
+  booktitle={25 years of the international symposia on Computer architecture (selected papers)},
+  pages={353--362},
+  year={1998},
+  organization={ACM}
+}
+
+@article{maa1991,
+  title="{Two economical directory schemes for large-scale cache coherent multiprocessors}",
+  author={Maa, Yeong-Chang and Pradhan, Dhiraj K and Thiebaut, Dominique},
+  journal={ACM SIGARCH Computer Architecture News},
+  volume={19},
+  number={5},
+  pages={10},
+  year={1991},
+  publisher={ACM}
+}
+
+@inproceedings{tang1976,
+  title="{Cache system design in the tightly coupled multiprocessor system}",
+  author={Tang, CK},
+  booktitle={Proceedings of the June 7-10, 1976, national computer conference and exposition},
+  pages={749--753},
+  year={1976},
+  organization={ACM}
+}
+
+@article{censier1978,
+  title="{A new solution to coherence problems in multicache systems}",
+  author={Censier, Lucien M. and Feautrier, Paul},
+  journal={Computers, IEEE Transactions on},
+  volume={100},
+  number={12},
+  pages={1112--1118},
+  year={1978},
+  publisher={IEEE}
+}
+
+@inproceedings{chaiken1991,
+ author = {Chaiken, David and Kubiatowicz, John and Agarwal, Anant},
+ title = "{LimitLESS Directories: A Scalable Cache Coherence Scheme}",
+ booktitle = {Proceedings of the Fourth International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS IV)},
+ year = {1991},
+ pages = {224--234}
+} 
+
+@article{chaiken1990,
+  title="{Directory-based cache coherence in large-scale multiprocessors}",
+  author={Chaiken, David and Fields, Craig and Kurihara, Kiyoshi and Agarwal, Anant},
+  journal={Computer},
+  volume={23},
+  number={6},
+  pages={49--58},
+  year={1990},
+  publisher={IEEE}
+}
+
+@inproceedings{gupta1990,
+  title="{Reducing memory and traffic requirements for scalable directory-based cache coherence schemes}",
+  author={Gupta, Anoop and Weber, Wolf-Dietrich and Mowry, Todd},
+  booktitle={International Conference on Parallel Processing},
+  year={1990}
+}
+
+@inproceedings{kelm2010,
+  title="{WAYPOINT: scaling coherence to thousand-core architectures}",
+  author={Kelm, John H and Johnson, Matthew R and Lumetta, Steven S and Patel, Sanjay J},
+  booktitle={Proceedings of the 19th international conference on Parallel architectures and compilation techniques},
+  pages={99--110},
+  year={2010},
+  organization={ACM}
+}
+
+@inproceedings{sanchez2012,
+  title="{SCD: A scalable coherence directory with flexible sharer set encoding}",
+  author={Sanchez, Daniel and Kozyrakis, Christos},
+  booktitle={High Performance Computer Architecture (HPCA), 2012 IEEE 18th International Symposium on},
+  pages={1--12},
+  year={2012},
+  organization={IEEE}
+}
+
+@inproceedings{choi2011,
+  title="{DeNovo: Rethinking the memory hierarchy for disciplined parallelism}",
+  author={Choi, Byn and Komuravelli, Rakesh and Sung, Hyojin and Smolinski, Robert and Honarmand, Nima and Adve, Sarita V and Adve, Vikram S and Carter, Nicholas P and Chou, Ching-Tsun},
+  booktitle={Parallel Architectures and Compilation Techniques (PACT), 2011 International Conference on},
+  pages={155--166},
+  year={2011},
+  organization={IEEE}
+}
+
+% QPI
+@inproceedings{ziakas2010,
+  title="{Intel{\textregistered} quickpath interconnect architectural features supporting scalable system architectures}",
+  author={Ziakas, Dimitrios and Baum, Allen and Maddox, Robert A and Safranek, Robert J},
+  booktitle={High Performance Interconnects (HOTI), 2010 IEEE 18th Annual Symposium on},
+  pages={1--6},
+  year={2010},
+  organization={IEEE}
+}
+
+% hypertransport
+@book{anderson2003,
+  title="{Hypertransport system architecture}",
+  author={Anderson, Don and Trodden, Jay},
+  year={2003},
+  publisher={Addison-Wesley Professional}
+}
+
+@article{lamport1978,
+  title="{Time, clocks, and the ordering of events in a distributed system}",
+  author={Lamport, Leslie},
+  journal={Communications of the ACM},
+  volume={21},
+  number={7},
+  pages={558--565},
+  year={1978},
+  publisher={ACM}
+}
+
+@inproceedings{gharachorloo1991,
+    author = {Kourosh Gharachorloo and Anoop Gupta and John Hennessy},
+    title = "{Two Techniques to Enhance the Performance of Memory Consistency Models}",
+    booktitle = {In Proceedings of the 1991 International Conference on Parallel Processing},
+    year = {1991},
+    pages = {355--364}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%  DSM
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+% IVY
+@article{li1989,
+  title="{Memory coherence in shared virtual memory systems}",
+  author={Li, Kai and Hudak, Paul},
+  journal={ACM Transactions on Computer Systems (TOCS)},
+  volume={7},
+  number={4},
+  pages={321--359},
+  year={1989},
+  publisher={ACM}
+}
+
+% treadmarks
+@inproceedings{keleher1994,
+  title="{Treadmarks: Distributed shared memory on standard workstations and operating systems}",
+  author={Keleher, Pete and Cox, Alan L and Dwarkadas, Sandhya and Zwaenepoel, Willy},
+  booktitle={USENIX Winter},
+  volume={1994},
+  year={1994}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%  MISC
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+@article{yu2014,
+  title="{Staring into the Abyss: An Evaluation of Concurrency Control with One
+  Thousand Cores}",
+  author={Yu, Xiangyao and Bezerra, George and Pavlo, Andrew and Devadas,
+  Srinivas and Stonebraker, Michael},
+  journal={Proceedings of the VLDB Endowment},
+  volume={8},
+  number={3},
+  pages={209--220},
+  year={2014},
+  publisher={VLDB Endowment}
+}
+
+@article{williams:2000,
+author = {Williams, Craig and Reynolds, Paul F. and de Supinski, Bronis R.},
+title = "{Delta Coherence Protocols}",
+journal = {IEEE Concurrency},
+issue_date = {July 2000},
+volume = {8},
+number = {3},
+month = jul,
+year = {2000},
+pages = {23--29}
+} 
+
+@inproceedings{bisiani1989,
+  author = {Bisiani, Roberto and Nowatzyk, Andreas and Ravishankar, Mosur},
+  title = "{Coherent Shared Memory on a Distributed Memory Machine}",
+  booktitle = {In Proc. of the 1989 Int'l Conf. on Parallel Processing (ICPP'89)},
+  pages = {133-141},
+  year = 1989
+}
+
+@article{isotach1997,
+  author = {Jr., Paul F. Reynolds and Williams, Craig and Jr., Raymond R. Wagner},
+  journal = {IEEE Trans. Parallel Distrib. Syst.},
+  number = 4,
+  pages = {337-348},
+  title = "{Isotach Networks}",
+  volume = 8,
+  year = 1997
+}
+
+@article{tardis-proof,
+  author    = {Xiangyao Yu and
+               Muralidaran Vijayaraghavan and
+               Srinivas Devadas},
+  title     = "{A Proof of Correctness for the Tardis Cache Coherence Protocol}",
+  journal   = {CoRR},
+  volume    = {abs/1505.06459},
+  month      = {May},
+  year      = {2015},
+  url       = {http://arxiv.org/abs/1505.06459}
+}
