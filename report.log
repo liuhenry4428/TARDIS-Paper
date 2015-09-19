@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2015.9.15)  16 SEP 2015 12:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2015.9.15)  19 SEP 2015 13:27
 entering extended mode
 **report.tex
 (report.tex
@@ -236,18 +236,34 @@ Missing character: There is no ù in font cmr12!
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ô in font cmr12!
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ô in font cmr12!
  [3]
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ô in font cmr12!
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ô in font cmr12!
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ú in font cmr12!
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ù in font cmr12!
+ [4]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 60.
+(Font)              <12> on input line 71.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 60.
+(Font)              <8> on input line 71.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 60.
- [4] <gfx/image1.png, id=20, 1194.4625pt x 234.8775pt>
+(Font)              <6> on input line 71.
+ [5]
+<gfx/image1.png, id=23, 1194.4625pt x 234.8775pt>
 File: gfx/image1.png Graphic file (type png)
-
-<use gfx/image1.png>
-Package pdftex.def Info: gfx/image1.png used on input line 86.
+ <use gfx/image1.png>
+Package pdftex.def Info: gfx/image1.png used on input line 97.
 (pdftex.def)             Requested size: 455.24408pt x 89.51958pt.
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
@@ -258,7 +274,7 @@ Missing character: There is no ú in font cmr12!
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ù in font cmr12!
- [5 <./gfx/image1.png>]
+ [6 <./gfx/image1.png>]
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ü in font cmr12!
 Missing character: There is no í in font cmr12!
@@ -271,19 +287,19 @@ Missing character: There is no ô in font cmr12!
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ô in font cmr12!
- [6]
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ô in font cmr12!
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ú in font cmr12!
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ù in font cmr12!
  [7]
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
+Missing character: There is no ô in font cmr12!
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ú in font cmr12!
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ù in font cmr12!
+ [8]
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
 Missing character: There is no ú in font cmr12!
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
@@ -294,7 +310,7 @@ Missing character: There is no ô in font cmr12!
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ô in font cmr12!
- [8] [9] (report.aux) ) 
+ [9] [10] (report.aux) ) 
 Here is how much of TeX's memory you used:
  3079 strings out of 493673
  41599 string characters out of 3151276
@@ -302,15 +318,15 @@ Here is how much of TeX's memory you used:
  6430 multiletter control sequences out of 15000+200000
  9763 words of font info for 34 fonts, out of 3000000 for 9000
  1025 hyphenation exceptions out of 8191
- 27i,17n,32p,1221b,420s stack positions out of 5000i,500n,10000p,200000b,50000s
-<D:/MikTex/fonts/type1/public/amsfonts/cm/cmbx10.pfb><D:
-/MikTex/fonts/type1/public/amsfonts/cm/cmbx12.pfb><D:/MikTex/fonts/type1/public
-/amsfonts/cm/cmr10.pfb><D:/MikTex/fonts/type1/public/amsfonts/cm/cmr12.pfb><D:/
-MikTex/fonts/type1/public/amsfonts/cm/cmr17.pfb><D:/MikTex/fonts/type1/public/a
-msfonts/cm/cmsy10.pfb><D:/MikTex/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on report.pdf (9 pages, 228046 bytes).
+ 27i,17n,32p,1282b,420s stack positions out of 5000i,500n,10000p,200000b,50000s
+<D:/MikTex/fonts/type1/public/amsfonts/cm/cmbx10.pfb><D
+:/MikTex/fonts/type1/public/amsfonts/cm/cmbx12.pfb><D:/MikTex/fonts/type1/publi
+c/amsfonts/cm/cmr10.pfb><D:/MikTex/fonts/type1/public/amsfonts/cm/cmr12.pfb><D:
+/MikTex/fonts/type1/public/amsfonts/cm/cmr17.pfb><D:/MikTex/fonts/type1/public/
+amsfonts/cm/cmsy10.pfb><D:/MikTex/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on report.pdf (10 pages, 230400 bytes).
 PDF statistics:
- 62 PDF objects out of 1000 (max. 8388607)
+ 65 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
