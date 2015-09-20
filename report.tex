@@ -6,7 +6,7 @@
 \graphicspath{ {gfx/} }
 \usepackage[capitalize]{cleveref}
 \usepackage{subfig}
-
+\usepackage{verbatim}
 
 %\DeclareGraphicsExtensions{.pdf,.jpg,.png}
 \doublespacing
@@ -129,24 +129,23 @@ Since this lease protocol is a very broad idea, we developed implementations tha
 	
 \end{center}
 
-The problem with livelock occurs when a core needs to wait for one or more cachelines to satisfy certain parameters before continuing forward. However, those cachelines never change because PTS does not increase since the core’s processes are not going forward in the first place. Take  the example above. Core 0 is waiting for done to be true before continuing via an empty while loop. Core 0 will never realize that done becomes true because an empty loop will not increase the core’s PTS. We developed three solutions to this.
+The problem with livelock occurs when a core needs to wait for one or more cachelines to satisfy certain parameters before continuing forward. However, those cachelines never change because PTS does not increase since the core’s processes are not going forward in the first place. Take  the example above. Core 0 is waiting for done to be true before continuing via an empty while loop. Core 0 will never realize that done becomes true because an empty loop will not increase the core’s PTS. When a core behaves like this, it is known as "spinning" because the core constantly monitors, or "spins" on a variable. We optimized the solution to this problem. 
 
-\begin{enumerate}
-	\item       Increase the PTS after a constant number of cycles.
-	
-	This simple solution definitely worked because a constantly increasing PTS meant that every cacheline would expire eventually and be updated from the L2 cache with data that allow the core to move out of livelock. However, it didn’t seem like the most effective solution because there could still be a relatively long time between the cachelines causing the livelock to be changed in the L2 cache and when the core realizes the change in the L1 cache. This scheme was used as the baseline for comparing other livelock detection techniques.
+%\begin{enumerate}
+	The baseline solution was to increment the PTS after a constant number of core cycles. This simple solution worked because a constantly increasing PTS meant that every cacheline would expire eventually and be updated from the L2 cache. The variable causing the spinning is updated and allows the core to move out of livelock. However, this method did not seem like the most effective solution because there could still be a relatively long time from when the spinning variable changes in the LLC to when the version of the variable within the core expires. Within this time period the core is spinning, thus doing nothing, and our goal was to minimize this gap. 
 	
 	
 	
 	
+	\begin{comment}
 	\item        Implement a “livelock bit” in the core, a livelock counter in the core, and an access counter in each cacheline. This is a two-step process that first checks whether there is a livelock, and then renews the cachelines that seem to be causing the livelock. This scheme is invoked every memory access. By using variable last\_cts, the core is able to determine whether the PTS has increased since the last memory access. If it did increase, then that means the core is progressing that there is no livelock. If the PTS did not change, then the livelock counter is incremented by 1. When it reaches a certain livelock threshold value, the livelock bit, initially false, is set to true to signal that there is a livelock going on. Henceforth, whenever a cacheline is accessed, its individual access counter is incremented by one until it reaches an access threshold, in which case that specific cacheline is renewed. At any time during this process, if the PTS changes when compared to last\_cts, then all counters are reset to 0 and the livelock bit is set to false.
+	\end{comment}
 	
+	Our optimization aims to target specific cachelines that could be causing the livelock. This approach will reduce the network traffic overhead when compared to the original scheme by only sending renew requests for a few possibly spinning cachelines.
 	
-	This method aims to target specific cachelines that could be causing the livelock, thus reducing the network traffic overhead when compared to the first scheme. The removal of self increment also means that cachelines that are not related to the livelock will not prematurely expire.
-	
-	\item       Use a cacheline buffer in addition to self increment. By keeping a buffer of the four most recently accessed cachelines, the core can guess the cachelines causing the livelock since they will be the most often checked. In the unlikely case that there are more than four cachelines simultaneously causing the livelock, self increment is in place to catch those outliers.
-	[Need test results]
-\end{enumerate}
+    This optimization was incorporated by using a cacheline buffer in addition to self increment. By keeping a buffer of the four most recently accessed cachelines, the core can guess that those cachelines contain the variable causing the livelock since they will be the most often checked. In the unlikely case that there are more than four cachelines simultaneously causing the livelock, self increment is in place to catch those outliers.
+%	[Need test results]
+%\end{enumerate}
 
 \section{Methodology}
 
@@ -192,7 +191,7 @@ connected using an on-chip network with MESH topology.
 three optimizations introduced in \cref{sec:optimization} are turned 
 on by default. The default delta timestamp size is 20~bits. The 
 rebased overhead for L1 and L2 cache is 128~ns and 1024~ns 
-respectively. During this rebase time, the cache is not able to serve 
+respectively. During this  time, the cache is not able to serve 
 other requests. The default self increment period is chosen to be 
 1000. The start lease is 8 for each cacheline and the increase factor 
 is 2. Unless otherwise stated, all the experiments use these 
@@ -230,6 +229,9 @@ Points to discuss
 
 - Both livelock detection and lease prediction reduce renew rate and 
   network traffic.
+  
+  
+
 
 \subsection{Timestamp Compression}
 
@@ -250,6 +252,8 @@ Please cover at least the following points in \cref{fig:tssize}:
 - We chose size = 20 as the default value since it provides reasonable 
   performance over all benchmarks.
 
+
+A delta that was too small would mean frequent rebasing and lower performance while a delta too large would cause this optimization to be ineffective. Through our benchmarking tests with various delta sizes, we found a size of 14 bits had bad performance. 16 Bits was better, but we chose 20 bits in the end because it was the smallest value that had no noticeable impact on performance. Figure 4 shows that  there is noticeable performance gain when increasing the delta size from 14 to 16 to 20, but the difference between 20 bits and 64 bits is insignificant when considering the large difference in the storage size. As long as the delta size is large enough to prevent overly frequent rebasing, performance is not sensitive to timestamp size, which makes 20 bits our optimal value for the delta timestamp size
 \subsection{Livelock Detection}
 
 \begin{figure}
@@ -264,6 +268,11 @@ For \cref{fig:self-nolive}, at least discuss the following points:
 - For baseline Tardis, both performance and renew rate go down as self
   increment period increases. Performance goes down for some
   benchmarks because of spinning.
+  
+  We studied the self increment method by changing the self increment period, which is the amount of cpu cycles that the core goes though per 1 pts increment (?) . As seen with figure 5, a low self increment period resulted in higher network traffic because of frequent renew requests while a larger period decreased the renew rate but resulted in a lower performance since a livelock took longer to resolve.  
+  
+  
+  By implementing the livelock detection system, we eliminated the decrease in performance while maintaining the gains of lower renewals and reduced network traffic.  A larger self increment period does not hurt performance anymore because our optimization deals with the livelock  as soon as it occurs by detecting it and renewing the relevant cachelines. The core no longer has to wait for self increment to for those cachelines to expire and that is what results in the lack of performance loss from large self increment periods.
 
 \begin{figure}
 	\centering
