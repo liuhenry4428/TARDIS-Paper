@@ -15,18 +15,14 @@
 \begin{document}
 	\maketitle
 
-\begin{abstract}
-In a world where data and information are being processed and transferred at an ever-increasing rate, the need for multiple processors has become popular in recent years. With multi-processor machines, computing power is significantly improved, but the problem of sharing memory between cores, or memory coherence, arises. A recently proposed solution that is both simpler and more scalable than the widely used directory coherence, TARDIS, uses timestamp counters to logically order memory operations to maintain sequential consistency, as opposed to using physical time. The vanilla TARDIS protocol, however, uses long hardware counters for timestamp storage. Additionally, for some applications, TARDIS generates a large number of renew requests which consumes the precious network bandwidth. Thus, we propose several optimizations: a timestamp compression scheme to reduce the memory cost of storing timestamps, and several lease predictor protocols to increase efficiency by minimizing the number of renewal requests due to cacheline expiration. [briefly mention results]
-\end{abstract}
-
 
 \section{Introduction}
 
 \begin{figure}
 \begin{center}
-  \includegraphics[width=6cm]{multicores.jpg}
+  \includegraphics[width=10cm]{distributed_system.JPG}
   \caption{Simple diagram of a shared memory system.}
-  \label{fig:multicore}
+  \label{fig:distributed}
 \end{center}
 \end{figure}
 
@@ -34,14 +30,14 @@ In the modern day, there is a continuously increasing demand for faster computer
 
 Memory coherence is most commonly and traditionally addressed by directory based coherence protocols [cite something], which is relatively intuitive. In such a system a central directory tracks the coherence between the caches, or how they are being owned or shared between cores. Thus, if a core requests private ownership of a cacheline, it must go through the directory so that all other lines can be invalidated and updated accordingly. Since the directory must maintain the sharer information for every cacheline, the system requires O(N) storage per cacheline if there are N cores. As N increases, the directory based protocol does not scale well.
 
-This problem is addressed by TARDIS, a new coherence protocol that is currently in development and has been mathematically proven to be sequentially correct [citation?]. TARDIS utilizes logical timestamps (to be explained in more detail in Background) to enforce the global memory order. The protocol only requires O(log N) storage per cacheline and is therefore significantly more scalable as well as being simpler. However, the major disadvantages of the vanilla TARDIS protocol is managing very large timestamps and dealing with potentially many renewal requests, most of which are unnecessary. 
+This problem is addressed by Tardis, a new coherence protocol that is currently in development and has been mathematically proven to be sequentially correct [citation?]. Tardis utilizes logical timestamps (to be explained in more detail in Background) to enforce the global memory order. The protocol only requires O(log N) storage per cacheline and is therefore significantly more scalable as well as being simpler. However, the major disadvantages of the vanilla Tardis protocol is managing very large timestamps and dealing with potentially many renewal requests, most of which are unnecessary. 
 
-The goal of this paper is to explore the expansive design space of TARDIS and optimize the protocol through timestamp compression and renewal minimization. We implemented a clever base timestamp + delta scheme to reduce the storage overhead of timestamps, implemented and analyzed several configurations of lease protocols to reduce the number of renewals, and designed a livelock detection algorithm to prevent several worst-case-scenarios of spinning variables
+The goal of this paper is to explore the expansive design space of Tardis and optimize the protocol through timestamp compression and renewal minimization. We implemented a clever base timestamp + delta scheme to reduce the storage overhead of timestamps, implemented and analyzed several configurations of lease protocols to reduce the number of renewals, and designed a livelock detection algorithm to prevent several worst-case-scenarios of spinning variables
 
 \section{Background}
-TARDIS uses timestamps to logically organize shared memory and ensure coherence. It excels at being simple and very scalable. By operating with logical time instead of physical time, TARDIS is able to have actions that seemingly “travel in time.” (Henceforth, time will refer to logical time.)
+Tardis uses timestamps to logically organize shared memory and ensure coherence. It excels at being simple and very scalable. By operating with logical time instead of physical time, Tardis is able to have actions that seemingly “travel in time.” (Henceforth, time will refer to logical time.)
 
-To give an analogy, think of a book in the library that two people want to read and then a third wants edit. Intuitively, it would seem that the two readers must first finish reading the book before the third person can edit, but TARDIS allows all three people to perform their tasks at the same time (Need to verify this).  Using arbitrary but realistic numbers, the first person may read the book from logical time 0 to 10, the second person reads from 0 to 20, and the editor “travels in time” and starts editing the book at time 21.
+To give an analogy, think of a book in the library that two people want to read and then a third wants edit. Intuitively, it would seem that the two readers must first finish reading the book before the third person can edit, but Tardis allows all three people to perform their tasks at the same time (Need to verify this).  Using arbitrary but realistic numbers, the first person may read the book from logical time 0 to 10, the second person reads from 0 to 20, and the editor “travels in time” and starts editing the book at time 21.
 
 This phenomenon is allowed to happen because of the use of timestamps to indicate logical time. Each cacheline, a basic unit of data storage, has two timestamps: Write Timestamp (WTS) and Read Timestamp (RTS). There is also a timestamp in each core called the Program Timestamp (PTS), which is only incremented when accessing data and should not be confused with the processor clock. PTS marks the core’s position in time and can vary between cores. RTS is always greater or equal to WTS, and the span of time between them dictates when the data is valid. This period is known as the lease because the core is basically reserving the information for a duration of time so that it will remain valid by specifying any change to that piece of data to be timestamped after the lease period. When a core’s PTS is in that range, the core may use that data, and when PTS is not, then the core must send a request to shared memory, known as the LLC, to request the newest version of the data, known as a renew request. If the WTS in the LLC is still the same, then the data has not been changed and the core can request another lease to keep using said data. If the data has been changed, then the renew request fails and the LLC sends back the newest version of the data.
 
@@ -57,59 +53,20 @@ Take the following example:
 \item The initial state of the two cores and two cachelines in the LLC
 \item Cacheline A is moved into core 0 and the LLC registers that it is exclusively owned by core 0 since its value is being edited. PTS in core 0 is increased to 1 because an action, in this case changing its value to 1, is performed and thus it is advancing in logical time. 
 \item pts of core 0 remains 1 because although cacheline B was loaded, no action was performed on it. B is only being read, so its rts increases to pts+10=11, where 10 is an arbitrarily picked lease value, to indicate a period of validity that lasts until pts exceeds 11. Methods of choosing lease will be discussed in the optimizations section. In the LLC, B’s timestamps and changed to reflect that it is being leased.
-\item Core 1 needs to edit B, but that cacheline is currently being read by core 0, so when it puts B in the exclusive state, PTS, RTS, and WTS are all set to 11+1=12 to depict that core 1 is logically ahead of core 0. B’s timestamps show that the Bs in each core are existing at different places in logical time which means it having value of 0 in core 0 and a value of 1 in core 1 is perfectly valid. This is the phenomenon of “traveling in time” that is unique to TARDIS because cacheline B is existing in different logical times at the same instant in physical time. 
+\item Core 1 needs to edit B, but that cacheline is currently being read by core 0, so when it puts B in the exclusive state, PTS, RTS, and WTS are all set to 11+1=12 to depict that core 1 is logically ahead of core 0. B’s timestamps show that the Bs in each core are existing at different places in logical time which means it having value of 0 in core 0 and a value of 1 in core 1 is perfectly valid. This is the phenomenon of “traveling in time” that is unique to Tardis because cacheline B is existing in different logical times at the same instant in physical time. 
 \item Core 1 now needs to read A, so it leases the cacheline for 10 timestamps, which makes its RTS = 12+10 = 22 where 12 is the PTS of core 1 and 10 is the arbitrarily chose lease. Since it is now being read and not edited, its exclusive ownership by core 0 changes to shared ownership, as reflected in the timestamps in the LLC.
 \end{enumerate}
 
 \section{Optimizations} \label{sec:optimization}
 
-In this section, we will detail the three optimizations we  have implemented to improve the efficiency and storage overhead of TARDIS.
+In this section, we will detail the three optimizations we  have implemented to improve the efficiency and storage overhead of Tardis.
 
 \subsection{Timestamp Compression}
 
-One of the major structural changes implemented in TARDIS is the inclusion of two timestamps in each cacheline. This translates to a large additional requirement for memory, so the optimization of timestamp compression was researched to reduce storage costs. We exploit the fact that the two timestamps of each cacheline are usually fairly close, so we implement a base timestamp (bts) and a delta = rts-wts, the difference between the timestamps. The timestamps were originally 64 bits each, so two timestamps per 512 bits of data is a 25\% storage overhead, and not efficient.  With the bts and delta, we were able to dramatically reduce storage costs, but we encountered the problem with timestamp rollover, where a timestamp would numerically increase beyond what the bts + delta scheme could support.
+One of the major structural changes implemented in Tardis is the inclusion of two timestamps in each cacheline. This translates to a large additional requirement for memory, so the optimization of timestamp compression was researched to reduce storage costs. We exploit the fact that the two timestamps of each cacheline are usually fairly close, so we implement a base timestamp (bts) and a delta = rts-wts, the difference between the timestamps. The timestamps were originally 64 bits each, so two timestamps per 512 bits of data is a 25\% storage overhead, and not efficient.  With the bts and delta, we were able to dramatically reduce storage costs, but we encountered the problem with timestamp rollover, where a timestamp would numerically increase beyond what the bts + delta scheme could support.
 
-\subsection{Lease Prediction} \label{sec:lease-prediction}
-\begin{center}
 
-\begin{tabular}{p{5cm} p{5cm}}
-	\textbf{Core 0} & \textbf{Core 1} \\
-	\begin{algorithm}[H]
-		\While{true}{
-			read A\;
-			B++\;
-		}
-
-\end{algorithm}
-&
-\begin{algorithm}[H]
-		\While{true}{
-			read A\;
-			B++\;
-		}
-\end{algorithm}
-\\
-\end{tabular}
-
-\end{center}
-
-One of the major issues with TARDIS is the fact that because of the concept of a lease, timestamps, specifically the PTS, will increase rapidly if a cacheline is write-intensive. Consider the example above. Assume the lease is arbitrarily chosen as 10. Since B is write-intensive, many renew requests for exclusive ownership will be made to maintain coherence between the two cores, thus causing the PTS to increment quickly in steps of 10. Therefore, although A is read-only, the cacheline needs to be repetitively renewed unnecessarily, as its lease constantly expires. Since renew requests incur extra latency and network traffic, this primitive static lease protocol is undesirable.
-Further motivating the need for a better lease protocol can be seen in \ref{fig:renewals}. For certain benchmarks, about 60\% of requests are renews, while a significantly small percentage of renewal requests are miss speculations, which are necessary renews.
-
-\begin{figure}
-\begin{center}
-  \includegraphics[width=16cm]{image1.png}
-  \caption{Graph illustrating the percentage of renew requests and miss speculations (requests that actually necessary) for various benchmarks. }
-  \label{fig:renewals}
-\end{center}
-\end{figure}
-
-With these observations in mind, we notice that write-intensive lines should have very small lease sizes so that when renew requests are sent, we prevent prolific increase in timestamps. On the other hand, since renewing is unnecessary in read-only lines, there is a potential for much larger leases.
-The basic implementation idea is that if data is renewed, then we progressively give the cacheline a smaller lease whereas data that are suspected to be read-only are incrementally given longer leases, for later renewals. In order to maintain these lease states, we add an n-bit counter to the cacheline that will keep track of a particular line’s “state.” Thus, if n is 2, for example, four states exist, namely 00, 01, 10, and 11. 
-
-Since this lease protocol is a very broad idea, we developed implementations that require several parameters, or different variations. One parameter is the value of n. If n is larger, this could allow for a more calibrated lease predictor, as the number of states increases exponentially, but also creates much more storage overhead (extra n bits per cacheline). Another choice is either decrementing the state progressively when a line requests exclusive ownership (10 → 01) or clearing the state counter immediately (10 → 00). In either case though, if a lease expires, we increment the state from 00 to 01, for example. The third parameter to be examined is the mapping from state to the actual lease. We have two basic algorithms, one is an exponentially growing lease and the other is a linearly growing one. Both are similar in nature, and revolve around the same ideas previously mentioned, but increase differently, as evident from the names. We also investigate the effect of using different start points for the lease (the lease assigned to 00), and the increase factor (how much a previous lease is added, or multiplied by). The sweep studies for these parameters can be found in Evaluations.
-
-\section{Livelock Detection}
+\subsection{Livelock Detection} \label{sec:livelock-detection}
 
 \begin{center}
 	
@@ -147,10 +104,50 @@ The problem with livelock occurs when a core needs to wait for one or more cache
 %	[Need test results]
 %\end{enumerate}
 
+\subsection{Lease Prediction} \label{sec:lease-prediction}
+\begin{center}
+
+\begin{tabular}{p{5cm} p{5cm}}
+	\textbf{Core 0} & \textbf{Core 1} \\
+	\begin{algorithm}[H]
+		\While{true}{
+			read A\;
+			B++\;
+		}
+
+\end{algorithm}
+&
+\begin{algorithm}[H]
+		\While{true}{
+			read A\;
+			B++\;
+		}
+\end{algorithm}
+\\
+\end{tabular}
+
+\end{center}
+
+One of the major issues with Tardis is the fact that because of the concept of a lease, timestamps, specifically the PTS, will increase rapidly if a cacheline is write-intensive. Consider the example above. Assume the lease is arbitrarily chosen as 10. Since B is write-intensive, many renew requests for exclusive ownership will be made to maintain coherence between the two cores, thus causing the PTS to increment quickly in steps of 10. Therefore, although A is read-only, the cacheline needs to be repetitively renewed unnecessarily, as its lease constantly expires. Since renew requests incur extra latency and network traffic, this primitive static lease protocol is undesirable.
+Further motivating the need for a better lease protocol can be seen in \ref{fig:renewals}. For certain benchmarks, about 60\% of requests are renews, while a significantly small percentage of renewal requests are miss speculations, which are necessary renews.
+
+\begin{figure}
+\begin{center}
+  \includegraphics[width=16cm]{image1.png}
+  \caption{Graph illustrating the percentage of renew requests and miss speculations (requests that actually necessary) for various benchmarks. }
+  \label{fig:renewals}
+\end{center}
+\end{figure}
+
+With these observations in mind, we notice that write-intensive lines should have very small lease sizes so that when renew requests are sent, we prevent prolific increase in timestamps. On the other hand, since renewing is unnecessary in read-only lines, there is a potential for much larger leases.
+The basic implementation idea is that if data is renewed, then we progressively give the cacheline a smaller lease whereas data that are suspected to be read-only are incrementally given longer leases, for later renewals. In order to maintain these lease states, we add an $n$-bit counter to the cacheline that will keep track of a particular line’s “state.” Thus, if $n$ is 2, for example, four states exist, namely 00, 01, 10, and 11. 
+
+Since this lease protocol is a very broad idea, we developed implementations that require several parameters, or different variations. One parameter is the value of $n$. If $n$ is larger, this could allow for a more calibrated lease predictor, as the number of states increases exponentially, but also creates much more storage overhead (extra $n$ bits per cacheline). Another choice is either decrementing the state progressively when a line requests exclusive ownership (10 $\rightarrow$ 01) or clearing the state counter immediately (10 $\rightarrow$ 00). In either case though, if a lease expires, we increment the state from 00 to 01, for example. The third parameter to be examined is the mapping from state to the actual lease. We have two basic algorithms, one is an exponentially growing lease and the other is a linearly growing one. Both are similar in nature, and revolve around the same ideas previously mentioned, but increase differently, as evident from the names. We also investigate the effect of using different start points for the lease (the lease assigned to 00), and the increase factor (how much a previous lease is added, or multiplied by). The sweep studies for these parameters can be found in \cref{sec:lease-prediction}.
+
 \section{Methodology}
 
 We used the Graphite simulator~\cite{graphite} to model our multicore 
-architecture. Graphite was developed at MIT and is able to simulate 
+architecture. Graphite is able to simulate 
 systems with up to 1000 cores. In this report, we only simulate a 
 64-core system, which matches the latest Intel multicore 
 processor~\cite{xeonphi}. Each core has a 32~kB private cache and all 
@@ -190,15 +187,20 @@ connected using an on-chip network with MESH topology.
 \cref{tab:system} shows the default configuration of Tardis. All the 
 three optimizations introduced in \cref{sec:optimization} are turned 
 on by default. The default delta timestamp size is 20~bits. The 
+<<<<<<< HEAD
 rebased overhead for L1 and L2 cache is 128~ns and 1024~ns 
 respectively. During this  time, the cache is not able to serve 
+=======
+rebase overhead for the L1 and L2 cache is 128~ns and 1024~ns 
+respectively. During this rebase time, the cache is not able to serve 
+>>>>>>> 74bd8504d2d327a968e42c29a1ade675e5727e27
 other requests. The default self increment period is chosen to be 
 1000. The start lease is 8 for each cacheline and the increase factor 
 is 2. Unless otherwise stated, all the experiments use these 
 parameters by default.
 
 We use a subset of Splash-2~\cite{splash2} benchmarks to evaluate our 
-optimization techniques. For each experiment, we show the speedup (in 
+optimization techniques. For each experiment, we show the speedup, or throughput (in 
 bars) and the renew rate (in red dots) for each benchmark.
 
 \section{Evaluations}
@@ -219,7 +221,7 @@ techniques introduced in \cref{sec:optimization}.
 optimization techniques introduced in this report. Here we show the 
 performance of the baseline directory protocol, the baseline Tardis 
 protocol~\cite{yu2015}, the baseline Tardis with livelock 
-detection~\cref{sec:livelck-detection} and Tardis with both livelock 
+detection~\cref{sec:livelock-detection} and Tardis with both livelock 
 detection and lease prediction~\cref{sec:lease-prediction}.
 
 Points to discuss
@@ -331,7 +333,7 @@ points:
 
 
 \section{Conclusion}
-	TARDIS is a new scheme to ensure memory coherence. Its main advantages are its scalability, simplicity, and to perform operations that “travel in time.” It uses logical time by incorporating timestamps in cachelines and cores. We tested multiple optimizations involving timestamp compression, lease prediction, and livelock detection, and were successful in increasing TARDIS’s speed and efficiency overall (we should run a test to comepare baseline TARDIS with all of our optimizations). We tested a variety of benchmarks on 64 core simulated machines via the Graphite simulator on MIT CSAIL’s Cagnode servers.
+	Tardis is a new scheme to ensure memory coherence. Its main advantages are its scalability, simplicity, and to perform operations that “travel in time.” It uses logical time by incorporating timestamps in cachelines and cores. We tested multiple optimizations involving timestamp compression, lease prediction, and livelock detection, and were successful in increasing Tardis’s speed and efficiency overall (we should run a test to comepare baseline Tardis with all of our optimizations). We tested a variety of benchmarks on 64 core simulated machines via the Graphite simulator on MIT CSAIL’s Cagnode servers.
 
 {
 	\bibliographystyle{abbrv}
