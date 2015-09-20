@@ -7,6 +7,8 @@
 \usepackage[capitalize]{cleveref}
 \usepackage{subfig}
 \usepackage{verbatim}
+\usepackage{pdfpages}
+
 
 %\DeclareGraphicsExtensions{.pdf,.jpg,.png}
 \doublespacing
@@ -45,7 +47,12 @@ The cachelines in shared memory can be in two states, shared and exclusive. A ca
 
 Take the following example:
 
-[Picture of example here] http://people.csail.mit.edu/devadas/pubs/tardis.pdf
+\begin{figure}
+	\centering
+	\includegraphics[width=0.95\columnwidth]{figs/example.pdf}
+	\caption{ Tardis example program.}
+	\label{fig:example}
+\end{figure}
 
 \begin{enumerate}
 \setcounter{enumi}{-1}
