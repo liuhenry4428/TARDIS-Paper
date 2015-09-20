@@ -50,10 +50,10 @@ Multiple cores allow for tasks to be split up and handled
 simultaneously, but accurate and efficient performance requires 
 parallelism and exploitation of private cache at each core.  The 
 essence of maintaining ``correctness'' is to prevent the use of stale 
-data, which is old information that is being used when it has already 
-been altered by another core. This problem is known as memory 
-coherence, and a coherence protocol is necessary to facilitate 
-performance and scalability of the system.
+data~\cite{lamport1978}, which is old information that is being used 
+when it has already been altered by another core. This problem is 
+known as memory coherence, and a coherence protocol is necessary to 
+facilitate performance and scalability of the system.
 
 Memory coherence is most commonly and traditionally addressed by 
 directory based coherence protocols~\cite{censier1978, tang1976}, 
