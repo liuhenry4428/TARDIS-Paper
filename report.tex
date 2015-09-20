@@ -302,16 +302,11 @@ For \cref{fig:self-live}, at least discuss the following:
 	\label{fig:static}
 \end{figure}
 
+We did not examine the effect of using three bits for the state size, because 8 possible states with an increase factor of 8 would lead to a lease that is at least $8^8$, over 16 million, an unnecessarily large lease.
+
 \cref{fig:static} sweeps the static lease from 4 to 16. Livelock 
-detection is enabled in this experiment. Discuss the following points:
-
-- performance is not sensitive to the value of static lease. However, 
-  this is because we enabled livelock detection. Without livelock 
-  detection, performance drops with large lease values for benchmarks 
-  heavily use spinning.
-
-- renew rate slightly reduces for most benchmarks because of less 
-  renew requests.
+detection is enabled in this experiment. It is important to note that performance is not sensitive to the value of static lease, due to the face that we enabled livelock detection. Without livelock detection, performance drops with large lease values for benchmarks that heavily use spinning variables.
+Renew rate reduces slightly for most benchmarks because of fewer renew requests with larger leases. This is most significantly evident in Water-Spatial.
 
 \begin{figure}
 	\centering
@@ -321,17 +316,15 @@ detection is enabled in this experiment. Discuss the following points:
 	\label{fig:exp}
 \end{figure}
 
-\cref{fig:exp} shows the performance of our lease prediction algorithm 
-discussed in \cref{sec:lease-prediction}. Discuss the following 
-points:
+\cref{fig:exp} shows the performance of our exponential lease prediction algorithm 
+discussed in \cref{sec:lease-prediction}. [Should we explain why no need to test linear?] Here, the lease prediction algorithm does not affect throughput because speculation prevents throughput from improving.
 
-- lease prediction algorithm does not affect throughput.
+Lease prediction does, however, reduce the renewal rate and network traffic. The reduction is more significant than simply using a larger static lease (\cref{fig:static}) which is apparent in many of the benchmarks.
 
-- lease prediction reduces renewal rate and network traffic. The 
-  reduction is more significant than simply using a larger static 
-  lease (\cref{fig:static}).
+\section{Future Work}
+The current lease prediction algorithm is extremely simple, and we believe that there may be better protocols to further decrease renewal rate for all benchmarks. There is a large design space with lease prediction, so we will be exploring new ideas.
 
-
+Another idea to further improve the performance of Tardis is to combine it with another protocol. One such protocol in mind is the MESI cache coherence protocol, in which each cacheline is marked with one of four states, as opposed to one of three in the MSI directory protocol.
 
 \section{Conclusion}
 	Tardis is a new scheme to ensure memory coherence. Its main advantages are its scalability, simplicity, and to perform operations that “travel in time.” It uses logical time by incorporating timestamps in cachelines and cores. We tested multiple optimizations involving timestamp compression, lease prediction, and livelock detection, and were successful in increasing Tardis’s speed and efficiency overall (we should run a test to comepare baseline Tardis with all of our optimizations). We tested a variety of benchmarks on 64 core simulated machines via the Graphite simulator on MIT CSAIL’s Cagnode servers.
