@@ -83,7 +83,7 @@ minimization. We implemented a clever base timestamp + delta scheme to
 reduce the storage overhead of timestamps, designed a livelock 
 detection algorithm to prevent several worst-case-scenarios of 
 spinning variables, and implemented and analyzed several 
-configurations of leasing protocols to reduce the number of renewals, 
+configurations of leasing protocols to reduce the number of renewals. Our total gains improved throughput by up to 6\% and reduced renew rate from 32\% to 26\%.
 
 \section{Background}
 
@@ -441,22 +441,13 @@ techniques introduced in \cref{sec:optimization}.
 \cref{fig:main} summarizes the performance improvement of the 
 optimization techniques introduced in this report. Here we show the 
 performance of the baseline directory protocol, the baseline Tardis 
-protocol~\cite{yu2015}, the baseline Tardis with livelock 
-detection~\cref{sec:livelock-detection} and Tardis with both livelock 
-detection and lease prediction~\cref{sec:lease-prediction}.
+protocol~\cite{yu2014}, the baseline Tardis with livelock 
+detection (\cref{sec:livelock-detection}) and Tardis with both livelock 
+detection and lease prediction (\cref{sec:lease-prediction}).
 
-\red{TODO}
+%\red{TODO}
 
-Points to discuss
-
-- Livelock detection improves performance for benchmarks heavily using 
-  spinning.
-
-- Both livelock detection and lease prediction reduce renew rate and 
-  network traffic.
-  
-  
-
+We note that livelock detection improves performance for benchmarks that heavily using spinning, such as Cholesky and FMM, and that livelock detection and lease prediction used in conjunction reduces the renew rate and network traffic for most benchmarks.
 
 \subsection{Timestamp Compression}
 
@@ -472,7 +463,7 @@ performance while a delta too large would cause this optimization to
 be ineffective. Through our benchmarking tests with various delta 
 sizes, we found a size of 14 bits had bad performance. 16 Bits was 
 better, but we chose 20 bits in the end because it was the smallest 
-value that had no noticeable impact on performance. Figure 4 shows 
+value that had no noticeable impact on performance. \cref{fig:tssize} shows 
 that  there is noticeable performance gain when increasing the delta 
 size from 14 to 16 to 20, but the difference between 20 bits and 64 
 bits is insignificant when considering the large difference in the 
@@ -491,7 +482,7 @@ size.
 \end{figure}
 
 We studied the self increment method by changing the self increment 
-period, which is the amount of cpu cycles that the core goes though 
+period, which is the amount of CPU cycles that the core goes though 
 per 1 pts increment. As seen with \cref{fig:self-nolive}, a low self 
 increment period resulted in higher network traffic because of 
 frequent renew requests while a larger period decreased the renew rate 
@@ -501,7 +492,7 @@ resolve.
   
 By implementing the livelock detection system, we eliminated the 
 decrease in performance while maintaining the gains of lower renewals 
-and reduced network traffic~\cite{fig:self-live}.  A larger self 
+and reduced network traffic~\cref{fig:self-live}.  A larger self 
 increment period does not hurt performance anymore because our 
 optimization deals with the livelock as soon as it occurs by detecting 
 it and renewing the relevant cachelines. The core no longer has to 
@@ -549,7 +540,7 @@ most significantly evident in Water-Spatial.
 \end{figure}
 
 \cref{fig:exp} shows the performance of our exponential lease 
-prediction algorithm discussed in \cref{sec:lease-prediction}. 
+prediction algorithm discussed in \cref{sec:lease-prediction}. We tested the linear prediction method as well, but found exponential to be significantly better performance. Thus, all the experiments are done with an exponential lease.
 %[Should we explain why no need to test linear?]
 % if you want, we can say that we tested both, and figured that 
 % exponential has better performance. 
@@ -578,10 +569,10 @@ protocol.
 
 Tardis is a new scheme to ensure memory coherence. Its main advantages 
 are its scalability, simplicity, and to perform operations that 
-``travel in time''. It uses logical time by incorporating timestamps 
+``travel in time'' by using logical time, incorporated with timestamps 
 in cachelines and cores. We tested multiple optimizations involving 
 timestamp compression, lease prediction, and livelock detection, and 
-were successful in increasing Tardis’s speed and efficiency overall.  
+were successful in improving important drawbacks of Tardis as a whole. Throughput is improved by up to 6\% and renew rate is reduced from 32\% to 26\%.
 
 {
 	\bibliographystyle{abbrv}
