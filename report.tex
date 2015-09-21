@@ -216,7 +216,7 @@ amount. This calculation is known as rebasing and preserves numerical
 values while freeing up room for the deltas to continue increasing.  
 There will probably be some cachelines whose deltas become negative 
 after this calculation. In that case, if the cacheline is in the 
-exclusive state, its deltas are set to zero because the core is the 
+exclusive state, its deltas are set to zero because the core its in is the 
 only one with claim over the data and doing so will not affect other 
 cores. If the cacheline is shared, then the cacheline is invalidated 
 and a renew request is sent to the LLC. 
@@ -234,7 +234,7 @@ and a renew request is sent to the LLC.
 		\end{algorithm}
 		&
 		\begin{algorithm}[H]
-			done = false $\rightarrow$  true
+			$done$ = false $\rightarrow$  true
 		\end{algorithm}
 		\\
 	\end{tabular}
@@ -247,9 +247,9 @@ forward. However, those cachelines never change because PTS does not
 increase since the core’s processes are not going forward in the first 
 place. Take  the example above. Core 0 is waiting for \textit{done} to 
 be true before continuing via an empty while loop. Core 0 will never 
-realize that done becomes true because an empty loop will not increase 
-the core’s PTS. When a core behaves like this, it is known as 
-"spinning" because the core constantly monitors, or "spins" on a 
+realize that \textit{done} becomes true because an empty loop will not increase 
+the core's PTS. When a core behaves like this, it is known as 
+"spinning" because the core constantly monitors, or ``spins", on a 
 variable. We optimized the solution to this problem. 
 
 %\begin{enumerate}
@@ -278,7 +278,7 @@ addition to self increment. The buffer keeps tracks of the last eight
 cachelines accessed, and each cacheline is given with a counter with 
 the initial value of 0. When a cacheline in the buffer is accessed 
 again, the counter increments. When the counter hits the threshold of 
-100 accesses, a check request is sent to the LLC to see if the data is 
+100 accesses, a check request message is sent to the LLC to see if the data is 
 still valid.
     
 In the event of a livelock, the counters for the variables responsible
