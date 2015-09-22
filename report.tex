@@ -21,10 +21,14 @@
 
 %\DeclareGraphicsExtensions{.pdf,.jpg,.png}
 \doublespacing
-\title{[Come up with title]}
+\title{Exploration and Optimization of Tardis: A Novel Cache Coherence Protocol}
 \date{}
 \begin{document}
 	\maketitle
+
+\begin{abstract}
+In a world where data and information are being processed and transferred at an ever-increasing rate, the need for multiple processors has become popular in recent years. With multi-processor machines, computing power is significantly improved, but the problem of sharing memory between cores, or memory coherence, arises. A recently proposed solution that is both simpler and more scalable than the widely used directory coherence, TARDIS, uses timestamp counters to logically order memory operations to maintain sequential consistency, as opposed to using physical time. The vanilla TARDIS protocol, however, uses long hardware counters for timestamp storage. Additionally, for some applications, TARDIS generates a large number of renew requests which consumes the precious network bandwidth. Thus, we propose several optimizations: a timestamp compression scheme to reduce the memory cost of storing timestamps, and several lease predictor protocols to increase efficiency by minimizing the number of renewal requests due to cacheline expiration. [briefly mention results]
+\end{abstract}
 
 
 \section{Introduction}
