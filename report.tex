@@ -95,48 +95,13 @@ configurations of leasing protocols to reduce the number of renewals. Our total 
 
 \section{Background}
 
-Tardis uses timestamps to logically organize shared memory and ensure 
-coherence. It excels at being simple and very scalable. By operating 
-with logical time instead of physical time, Tardis is able to have 
-actions that seemingly “travel in time.” 
-%(Henceforth, time will refer to logical time.)
+Tardis uses logical timestamps to organize shared memory and ensure coherence, which allows it to be simple yet very scalable. By operating with logical time instead of physical time, Tardis is even able to perform actions that seemingly “travel in time,” a phenomenon that will be elaborated upon further on. Henceforth, time will refer to logical time.
+To give an analogy, think of a book in the library that two people want to read and then a third wants edit. Intuitively, it would seem that the two readers must first finish reading the book before the third can edit, but Tardis allows all three people to perform their tasks at the same time.  Using arbitrary but realistic numbers, the first person may read the book from logical time 0 to 10, the second person reads from 0 to 20, and the editor “travels in time” and starts editing the book at time 21.
+There are a few key characteristics of Tardis that allows this to happen, and the most fundamental one is its use of timestamps. Each cacheline, a basic unit of data storage, has two timestamps: the write timestamp (WTS) and read timestamp (RTS). WTS can be thought of as the time a cacheline was last written and represents the point onwards for which the information is valid, and RTS is the time of the last valid read, or the last point in time when the data can be guaranteed to be correct. There is also a timestamp in each core called the program timsteamp (PTS) which monotonically increases by taking on the timestamp of the last operation within that core. It acts like a clock in that it tracks the core’s position in time relative to other timestamps, but it should not be confused with the processor clock, which increases based on physical time. PTS is allowed to vary between cores because it is only dependent on a core’s own operations.
+By its nature, RTS is always greater or equal to WTS, and the span of time between them, inclusive, dictates when the data is valid. When the PTS is within that range, then the cacheline is valid within that core. This period of validity is called the lease because the core reserves those timestamps such that all changes must happen at a later timestamp, thus preserving the integrity of data during that span of time. When PTS increases above the RTS of a cacheline, its data is no longer reliable because another core may have edited. To resolve this issue, the core with the outdated cacheline sends a renew request message to the shared memory, also known as the last level cache (LLC), asking whether the information has been modified. If it had not been changed, then the LLC hands the core another lease; if it had been changed, then the LLC responds with the newest version of the data as well as another lease.
+The cachelines in shared memory can be in two states, shared and exclusive. A cachenline being in the shared state means that one or more cores can read from it. When a core wants to modify it, the cacheline is set to the exclusive state, signaling that it is owned only by a core. This allows the owner core to freely edit the data with conflict. When another core needs to read that cacheline, a writeback request is sent to the owner core, which then writes the updated data back to the LLC with updated timestamps to reflect that it has been edited and is in turn transferred to the requesting core.
 
-To give an analogy, think of a book in the library that two people 
-want to read and then a third wants edit. Intuitively, it would seem 
-that the two readers must first finish reading the book before the 
-third person can edit, but Tardis allows all three people to perform 
-their tasks at the same time.  Using arbitrary but realistic numbers, 
-the first person may read the book from logical time 0 to 10, the 
-second person reads from 0 to 20, and the editor “travels in time” and 
-starts editing the book at time 21.
 
-This phenomenon is allowed to happen because of the use of timestamps 
-to indicate logical time. Each cacheline, a basic unit of data 
-storage, has two timestamps: Write Timestamp (WTS) and Read Timestamp 
-(RTS). There is also a timestamp in each core called the Program 
-Timestamp (PTS), which is only incremented when accessing data and 
-should not be confused with the processor clock. PTS marks the core’s 
-position in time and can vary between cores. RTS is always greater or 
-equal to WTS, and the span of time between them dictates when the data 
-is valid. This period is known as the lease because the core is 
-basically reserving the information for a duration of time so that it 
-will remain valid by specifying any change to that piece of data to be 
-timestamped after the lease period. When a core’s PTS is in that 
-range, the core may use that data, and when PTS is larger than RTS, 
-then the core must send a request to shared memory, known as the last 
-level cache (LLC), to request the newest version of the data, known as 
-a renew request.  If the WTS in the LLC is still the same, then the 
-data has not been changed and the core can request another lease to 
-keep using said data. If the data has been changed, then the renew 
-request fails and the LLC sends back the newest version of the data.
-
-The cachelines in shared memory can be in two states, shared and 
-exclusive. A cachenline being in the shared state means that multiple 
-cores can read from it. When a core wants to modify it, the cacheline 
-is set to the exclusive state, signaling that it is exclusively owned 
-by said core. When another core needs to read that cacheline, a 
-writeback request is sent to the owner core, which then writes the 
-updated data back to the LLC with updated timestamps.
 
 Take the following example shown in Listing~\ref{lst:example}, the 
 execution of the program is shown in \cref{fig:example}:
