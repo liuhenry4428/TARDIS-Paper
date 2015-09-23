@@ -56,7 +56,7 @@ exponentially~\cite{tilera, xeonphi}.
 % 
 Multiple cores allow for tasks to be split up and handled 
 simultaneously, but accurate and efficient performance requires 
-parallelism and exploitation of private cache at each core.  The 
+parallelism and exploitation of the private cache at each core.  The 
 essence of maintaining ``correctness'' is to prevent the use of stale 
 data~\cite{lamport1978}, which is old information that is being used 
 when it has already been altered by another core. This problem is 
@@ -102,7 +102,7 @@ Tardis uses logical timestamps to organize shared memory and ensure coherence, w
 To give an analogy, think of a book in the library that two people want to read and then a third wants to edit. Intuitively, it would seem that the two readers must first finish reading the book before the third can edit, but Tardis allows all three people to perform their tasks at the same time.  Using arbitrary but realistic numbers, the first person may read the book from logical time 0 to 10, the second person reads from 0 to 20, and the editor “travels in time” and starts editing the book at time 21.
 
 
-There are a few key characteristics of Tardis that allows this to happen, and the most fundamental one is its use of timestamps. Each cacheline\begin{comment}, a basic unit of data storage,\end{comment} has two timestamps: the write timestamp (WTS) and read timestamp (RTS). WTS can be thought of as the time a cacheline was last written and represents the point onwards for which the information is valid, and RTS is the time of the last valid read, or the last point in time when the data can be guaranteed to be correct. There is also a timestamp in each core called the program timsteamp (PTS) which monotonically increases by taking on the timestamp of the last operation within that core. It acts like a clock in that it tracks the core's position in logical time relative to other timestamps, but it should not be confused with the processor clock, which increases based on physical time. PTS is allowed to vary between cores because it is only dependent on a core's own operations.
+There are a few key characteristics of Tardis that allows this to happen, and the most fundamental one is its use of timestamps. Each cacheline has two timestamps: the write timestamp (WTS) and read timestamp (RTS). WTS can be thought of as the time a cacheline was last written and represents the point onwards for which the information is valid, and RTS is the time of the last valid read, or the last point in time when the data can be guaranteed to be correct. There is also a timestamp in each core called the program timsteamp (PTS) which monotonically increases by taking on the timestamp of the last operation within that core. It acts like a clock in that it tracks the core's position in logical time relative to other timestamps, but it should not be confused with the processor clock, which increases based on physical time. PTS is allowed to vary between cores because it is only dependent on a core's own operations.
 
 
 By its nature, RTS is always greater or equal to WTS, and the span of time between them, inclusive, dictates when the data is valid. When the PTS is within that range, then the cacheline is valid within that core. This period of validity is called the lease because the core reserves those timestamps such that all changes must happen at a later timestamp, thus preserving the integrity of data during that span of time. When PTS increases above the RTS of a cacheline, its data is no longer reliable because another core may have edited the data. To resolve this issue, the core with the outdated cacheline sends a renew request message to the shared memory, also known as the last level cache (LLC), asking whether the information has been modified. If it had not been changed, then the LLC hands the core another lease; if it had been changed, then the LLC responds with the newest version of the data as well as another lease.
@@ -307,7 +307,7 @@ no check requests will be sent.
 
 One of the major issues with Tardis is the fact that because of the 
 concept of a lease, timestamps, specifically the PTS, will increase 
-rapidly if a cacheline is write-intensive. Consider the example above.   
+rapidly if a cacheline is write-intensive. Consider \cref{alg:lease} above.   
 Assume the lease is arbitrarily chosen as 10. Since B is 
 write-intensive, many renew requests for exclusive ownership will be 
 made to maintain coherence between the two cores, thus causing the PTS 
