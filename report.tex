@@ -95,7 +95,7 @@ configurations of leasing protocols to reduce the number of renewals. Our total 
 \section{Background}
 \label{sec:background}
 
-Tardis uses logical timestamps to organize shared memory and ensure coherence, which allows it to be simple yet very scalable. By operating with logical time instead of physical time, Tardis is even able to perform actions that seemingly “travel in time,” a phenomenon that will be elaborated upon late in this section. Henceforth, time will refer to logical time.
+Tardis uses logical timestamps to organize shared memory and ensure coherence, which allows it to be simple yet very scalable. By operating with logical time instead of physical time, Tardis is even able to perform actions that seemingly “travel in time,” a phenomenon that will be elaborated upon later in this section. Henceforth, time will refer to logical time.
 
 
 To give an analogy, think of a book in the library that two people want to read and then a third wants to edit. Intuitively, it would seem that the two readers must first finish reading the book before the third can edit, but Tardis allows all three people to perform their tasks at the same time.  Using arbitrary but realistic numbers, the first person may read the book from logical time 0 to 10, the second person reads from 0 to 20, and the editor “travels in time” and starts editing the book at time 21.
