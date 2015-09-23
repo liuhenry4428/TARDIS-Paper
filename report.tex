@@ -48,7 +48,7 @@ In a world where data and information are being processed and transferred at an 
 
 In the modern day, there is a continuously increasing demand for 
 faster computer processors. Since one of the most effective methods to 
-address this is to add multiple cores to a CPU and allowing tasks to 
+address this need is to add multiple cores to a CPU and allow tasks to 
 execute in parallel, the number of cores is increasing 
 exponentially~\cite{tilera, xeonphi}. 
 % The following statement cannot be right...
@@ -56,9 +56,9 @@ exponentially~\cite{tilera, xeonphi}.
 % 
 Multiple cores allow for tasks to be split up and handled 
 simultaneously, but accurate and efficient performance requires 
-parallelism and exploitation of private cache at each core.  The 
+parallelism and exploitation the private cache in each core.  The 
 essence of maintaining ``correctness'' is to prevent the use of stale 
-data~\cite{lamport1978}, which is old information that is being used 
+data~\cite{lamport1978}, which is old information that is still being used 
 when it has already been altered by another core. This problem is 
 known as memory coherence, and a coherence protocol is necessary to 
 facilitate performance and scalability of the system.
@@ -72,16 +72,15 @@ ownership of a cacheline (the basic unit of data storage), it must
 go through the directory so that the lines cached in other cores are 
 invalidated accordingly. Since the directory must maintain the sharer 
 information for every cacheline, the system requires $O$($N$) storage per 
-cacheline if there are $N$ cores.  As $N$ increases, the directory based 
-protocol does not scale well.
+cacheline, where $N$ is the number of cores.  The directory based 
+protocol does not scale well with an increasing $N$.
 
 This problem can be addressed by Tardis~\cite{tardis}, a new coherence 
 protocol that is currently in development and has been mathematically 
 proven to be correct~\cite{tardis-proof}. Tardis utilizes logical 
 timestamps (to be explained in more detail in \cref{sec:background}) to enforce 
 the global memory order. The protocol only requires $O$(log $N$) storage 
-per cacheline and is therefore significantly more scalable as well as 
-being simpler. However, the major disadvantages of the vanilla Tardis 
+per cacheline and is therefore significantly more scalable and its procedure is also simpler. However, the major disadvantages of the vanilla Tardis 
 protocol is managing very large timestamps and dealing with 
 potentially many renewal requests, most of which are unnecessary. 
 
@@ -96,13 +95,13 @@ configurations of leasing protocols to reduce the number of renewals. Our total 
 \section{Background}
 \label{sec:background}
 
-Tardis uses logical timestamps to organize shared memory and ensure coherence, which allows it to be simple yet very scalable. By operating with logical time instead of physical time, Tardis is even able to perform actions that seemingly “travel in time,” a phenomenon that will be elaborated upon further on. Henceforth, time will refer to logical time.
+Tardis uses logical timestamps to organize shared memory and ensure coherence, which allows it to be simple yet very scalable. By operating with logical time instead of physical time, Tardis is even able to perform actions that seemingly “travel in time,” a phenomenon that will be elaborated upon late in this section. Henceforth, time will refer to logical time.
 
 
 To give an analogy, think of a book in the library that two people want to read and then a third wants to edit. Intuitively, it would seem that the two readers must first finish reading the book before the third can edit, but Tardis allows all three people to perform their tasks at the same time.  Using arbitrary but realistic numbers, the first person may read the book from logical time 0 to 10, the second person reads from 0 to 20, and the editor “travels in time” and starts editing the book at time 21.
 
 
-There are a few key characteristics of Tardis that allows this to happen, and the most fundamental one is its use of timestamps. Each cacheline\begin{comment}, a basic unit of data storage,\end{comment} has two timestamps: the write timestamp (WTS) and read timestamp (RTS). WTS can be thought of as the time a cacheline was last written and represents the point onwards for which the information is valid, and RTS is the time of the last valid read, or the last point in time when the data can be guaranteed to be correct. There is also a timestamp in each core called the program timsteamp (PTS) which monotonically increases by taking on the timestamp of the last operation within that core. It acts like a clock in that it tracks the core's position in logical time relative to other timestamps, but it should not be confused with the processor clock, which increases based on physical time. PTS is allowed to vary between cores because it is only dependent on a core's own operations.
+There are a few key characteristics of Tardis that allows this to happen, and the most fundamental one is its use of timestamps. Each cacheline has two timestamps: the write timestamp (WTS) and read timestamp (RTS). WTS can be thought of as the time a cacheline was last written and represents the point onwards for which the information is valid, and RTS is the time of the last valid read, or the last point in time when the data can be guaranteed to be correct. There is also a timestamp in each core called the program timsteamp (PTS) which monotonically increases by taking on the timestamp of the last operation within that core. It acts like a clock in that it tracks the core's position in logical time relative to other timestamps, but it should not be confused with the processor clock, which increases based on physical time. PTS is allowed to vary between cores because it is only dependent on a core's own operations.
 
 
 By its nature, RTS is always greater or equal to WTS, and the span of time between them, inclusive, dictates when the data is valid. When the PTS is within that range, then the cacheline is valid within that core. This period of validity is called the lease because the core reserves those timestamps such that all changes must happen at a later timestamp, thus preserving the integrity of data during that span of time. When PTS increases above the RTS of a cacheline, its data is no longer reliable because another core may have edited the data. To resolve this issue, the core with the outdated cacheline sends a renew request message to the shared memory, also known as the last level cache (LLC), asking whether the information has been modified. If it had not been changed, then the LLC hands the core another lease; if it had been changed, then the LLC responds with the newest version of the data as well as another lease.
@@ -111,7 +110,7 @@ By its nature, RTS is always greater or equal to WTS, and the span of time betwe
 The cachelines in shared memory can be in two states, shared and exclusive. A cachenline being in the shared state means that one or more cores can read from it. When a core wants to modify it, the cacheline is set to the exclusive state, signaling that it is owned by only one core. This allows the owner core to freely edit the data without conflict. When another core needs to read that cacheline, a writeback request is sent to the owner core, which then writes the updated data back to the LLC with updated timestamps to reflect that it has been edited and is in turn transferred to the requesting core.
 
 
-\vspace{50mm}
+
 
 
 
@@ -238,7 +237,7 @@ forward. However, those cachelines never change because PTS will not
 increase due to the core's processes already being at a standstill. Take  the example of \cref{alg:spinning}. Core 0 is waiting for \textit{done} to  
 be true before continuing via an empty while loop. Core 0 will never 
 realize that \textit{done} becomes true because an empty loop will not increase 
-the core's PTS. When a core behaves like this, it is known as 
+the core's PTS and its current version of $done$ will never expire. When a core behaves like this, it is known as 
 ``spinning'' because the core constantly monitors, or ``spins", on a 
 variable. 
 
@@ -271,7 +270,7 @@ In the event of a livelock, the counters for the variables responsible
 for the spinning will increase to 100 quickly and the livelock can	
 be resolved with the check request. If there is no livelock, then the 
 core will be accessing different addresses, and since the buffer only 
-keeps track of last cachelines accessed, no counter will reach 100 and 
+keeps track of last eight cachelines accessed, no counter will reach 100 and 
 no check requests will be sent.
 %	[Need test results]
 %\end{enumerate}
