@@ -111,10 +111,9 @@ By its nature, RTS is always greater or equal to WTS, and the span of time betwe
 The cachelines in shared memory can be in two states, shared and exclusive. A cachenline being in the shared state means that one or more cores can read from it. When a core wants to modify it, the cacheline is set to the exclusive state, signaling that it is owned by only one core. This allows the owner core to freely edit the data without conflict. When another core needs to read that cacheline, a writeback request is sent to the owner core, which then writes the updated data back to the LLC with updated timestamps to reflect that it has been edited and is in turn transferred to the requesting core.
 
 
+\vspace{50mm}
 
 
-Take the following example shown in Listing~\ref{lst:example}, the 
-execution of the program is shown in \cref{fig:example}:
 
 \vspace{-.1in}
 \begin{lstlisting}[language=C,label={lst:example},caption={Example 
@@ -133,9 +132,16 @@ Program}]
 	\label{fig:example}
 \end{figure}
 
+
+Take the example shown in Listing~\ref{lst:example}. Execution of the program is shown in \cref{fig:example}:
+
+
 \begin{enumerate}
 \setcounter{enumi}{-1}
-	
+
+
+
+
 \item The initial state of the system with two empty cores and cachelines A and B in the LLC.
 
 \item Core 0 wants to edit cacheline A and the LLC registers that it is 
@@ -144,7 +150,7 @@ an action, in this case changing A's value to 1, is performed and thus
 it is advancing in logical time. WTS and RTS are the same value because core 0 is the only one with access to A, meaning that there cannot be conflict with other cores and thus a period of validity is not needed.
 
 \item Core 0 wants to read cacheline B. PTS of core 0 remains 1 because 
-although cacheline B was loaded, no update was performed on it. Its RTS increases to $PTS + 10 = 11$, where 10 is an 
+although cacheline B was loaded, no update was performed on it. Its RTS increases to PTS $+ 10 = 11$, where 10 is an 
 arbitrarily picked lease value, to indicate a period of validity that 
 lasts until PTS exceeds 11. This is necessary because B is being read and not edited, so it exists in the shared state which allows other cores to access it at the same time. Methods of choosing lease will be 
 discussed in \cref{sec:opt-lease}. In the LLC, B's timestamps are  
@@ -221,13 +227,15 @@ and a renew request is sent to the LLC.
 		\end{algorithm}
 		\\
 	\end{tabular}
-	
+	\begin{algorithm}
+		\caption{Program with Spinning}\label{alg:spinning}
+	\end{algorithm}
 \end{center}
 %\end{figure}
 The problem with livelock occurs when a core needs to wait for one or 
 more cachelines to satisfy certain parameters before continuing 
 forward. However, those cachelines never change because PTS will not  
-increase due to the core's processes already being at a standstill. Take  the example above. Core 0 is waiting for \textit{done} to  
+increase due to the core's processes already being at a standstill. Take  the example of \cref{alg:spinning}. Core 0 is waiting for \textit{done} to  
 be true before continuing via an empty while loop. Core 0 will never 
 realize that \textit{done} becomes true because an empty loop will not increase 
 the core's PTS. When a core behaves like this, it is known as 
@@ -286,9 +294,14 @@ no check requests will be sent.
 			read A\;
 			B++\;
 		}
+		
 \end{algorithm}
 \\
 \end{tabular}
+
+\begin{algorithm}
+	\caption{Lease Demonstration}\label{alg:lease}
+\end{algorithm}
 
 \end{center}
 
@@ -473,7 +486,7 @@ and reduced network traffic~(\cref{fig:self-live}).  A larger self
 increment period does not hurt performance anymore because our 
 optimization deals with the livelock  by detecting 
 it as soon as it occurs and renewing the relevant cachelines. The core no longer has to 
-wait for self incrementation for those cachelines to expire, resulting in the XXXXmitigation? of performance loss from large self increment 
+wait for self incrementation for those cachelines to expire, resulting in the reduction of performance loss from large self increment 
 periods.
 
 \begin{figure}
@@ -484,7 +497,7 @@ periods.
 \end{figure}
 
 
-\subsection{Lease Prediction}                         \label{sec:opt-lease}                         XXXXXXXXXXXXXXXX ADD LISTING
+\subsection{Lease Prediction}                         \label{sec:opt-lease}                       
 
 \begin{figure}
 	\centering
